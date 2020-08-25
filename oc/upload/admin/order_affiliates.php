@@ -1,0 +1,106 @@
+<?php
+error_reporting(E_ERROR);
+/* =============================================================
+/   * OpenCart 2.x/3.x Order+ Order Options Excel Export Tool version 5
+
+	* Developed by Daniel Brooke Peig (daniel@danbp.org)
+	*
+	* http://www.danbp.org
+	*
+	*  Copyright (C) 2017  Daniel Brooke Peig
+	*
+	* This software is distributed under the MIT License.
+	* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+	*
+	* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	*
+	* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	*
+	*
+/* =============================================================*/
+/*
+*
+*	INTRODUCTION
+*
+*	This script should work in all OpenCart 2.x installations because it extracts the data directly from the OpenCart Database and does not rely on any OpenCart directory files.
+*	The script just dumps readable order data in an Excel file, you may later use Excel functions to auto-format the data according to your needs.
+* 
+*	INSTRUCTIONS
+*	
+*	1. Modify the script configuration below to your database access information and set a PASSWORD. The password will protect the script from outside access and should be different than the DB password.
+*	2. Place the modified script in any accessible (but safe) folder in your server, for example, the OpenCart /admin directory.
+*	3. Access the script by using the following URL. Remember to replace YOURPASSWORD with the password you set in the configuration.
+*		URL: https://www.yourserver.com/yourfolder/admin/order_export.php?pw=YOURPASSWORD
+*	4. If everything is OK you will be prompted to download the Excel file.
+*	5. Each line of the Excel file represents one order item or item option. You may group options for the same item by using the column product_item.
+*   6. If the characters appear invalid try using the "UTF-8 TXT" version of the script.
+*
+*/
+
+
+//Script Configuration
+define ("DB_HOST", "localhost"); //DB host address
+define ("DB_USER", "ocdevon"); //DB user name
+define ("DB_PASS","password"); //DB password
+define ("DB_NAME","ocdevon"); //DB database name
+define ("PASSWORD", "ocdevon12"); //Script access password (will be used to prevent unauthorized access to the data). Please use a different password than the DB.
+define ("PREFIX", "oc_"); //Table name prefix (if any). Example: "oc_", "opencart_", etc...
+define ("FILENAME", "order_data"); //Export default filename
+
+//SQL Query, customize if if you need any more (or less) fields
+define ("SQL","
+SELECT af1.firstname as First_Name, af1.lastname as Last_Name, gr.name as Group, af1.email as Email, tr.amount as Balance
+FROM ocdevon.oc_customer AS af1, 
+(SELECT tr1.customer_id,  sum(tr1.amount) as amount FROM ocdevon.oc_customer_transaction AS tr1 GROUP BY tr1.customer_id) AS tr,
+ocdevon.oc_customer_group_description AS gr
+WHERE tr.customer_id = af1.customer_id AND af1.customer_group_id = gr.customer_group_id
+");
+
+
+if($_GET["pw"]==PASSWORD){
+	
+	//Connect to the database and fetch the data
+	$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die("DB: Couldn't make connection. Please check the database configurations.");
+	$setSql = SQL;
+	$setRec = mysqli_query($link, $setSql);
+	
+	//Fetch the column names
+	$columns = mysqli_fetch_fields($setRec);
+	foreach($columns as $column){
+		$setMainHeader .= $column->name."\t";
+	}
+
+	while($rec = mysqli_fetch_row($setRec))  {
+	  $rowLine = '';
+	  foreach($rec as $value)       {
+		if(!isset($value) || $value == "")  {
+		  $value = "\t";
+		}   else  {
+	//Escape all the special characters
+		  $value = strip_tags(str_replace('"', '""', $value));
+		  $value = '"'.$value . '"' . "\t";
+		}
+		$rowLine .= $value;
+	  }
+	  $setData .= trim($rowLine)."\n";
+	}
+	  $setData = str_replace("\r", "", $setData);
+	if ($setData == "") {
+	  $setData = "\nNo matching records found\n";
+	}
+	
+	//Download headers
+	header("Content-type: application/octet-stream");
+	header("Content-Disposition: attachment; filename=".FILENAME."-".date("Y_m_d-Hi_s").".xls");
+	header("Pragma: no-cache");
+	header("Expires: 0");
+
+	//Print the table rows as an Excel row with the column name as a header
+	echo ucwords($setMainHeader)."\n".$setData."\n";
+}
+//Message to display in case of wrong access password
+else {
+	$uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
+	echo "Invalid password! Remember to write the URL properly and include your password:<BR>".(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]".$uri_parts[0]."?pw=your_password";
+}
+?>
