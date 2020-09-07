@@ -38,16 +38,15 @@ error_reporting(E_ERROR);
 */
 
 
-//Script Configuration
-//Script Configuration
+
 // Configuration
-if (is_file('config.php')) {
-	require_once('config.php');
+if (is_file('../config.php')) {
+	require_once('../config.php');
 }
 
 // Install
 if (!defined('DIR_APPLICATION')) {
-	header('Location: install/index.php');
+	header('Location: ../install/index.php');
 	exit;
 }
 
