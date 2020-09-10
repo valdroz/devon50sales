@@ -272,15 +272,13 @@ class ModelCustomerCustomer extends Model {
 	}
         
         public function getAffliateByTracking($tracking) {
-			// Val: adding ` AND status = 1`
-                $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_affiliate WHERE tracking = '" . $this->db->escape($tracking) . "' AND status = 1");
+                $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_affiliate WHERE tracking = '" . $this->db->escape($tracking) . "'");
                 
                 return $query->row;
         }
 	
 	public function getAffiliate($customer_id) {
-		// Val: adding ` AND status = 1`
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_affiliate WHERE customer_id = '" . (int)$customer_id . "' AND status = 1");
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_affiliate WHERE customer_id = '" . (int)$customer_id . "'");
 
 		return $query->row;
 	}
