@@ -38,7 +38,6 @@ error_reporting(E_ERROR);
 */
 
 
-
 // Configuration
 if (is_file('../config.php')) {
 	require_once('../config.php');
