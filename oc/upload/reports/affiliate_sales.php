@@ -28,7 +28,7 @@ SELECT
  prod.price as 'Product Price',
  prod.quantity as 'Quantity',
  prod.total as 'Total',
- oc_order.shipping_firstname as 'Shipping First Name',
+ oc_order.shipping_firstname as 'Shipping: First Name',
  oc_order.shipping_lastname as 'Last Name',
  oc_order.shipping_company as 'Company Name',
  oc_order.shipping_address_1 as 'Address Line 1',
