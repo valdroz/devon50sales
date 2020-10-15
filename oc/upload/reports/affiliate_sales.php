@@ -29,13 +29,13 @@ SELECT
  prod.quantity as 'Quantity',
  prod.total as 'Total',
  oc_order.shipping_firstname as 'Shipping First Name',
- oc_order.shipping_lastname as 'Shipping Last Name',
- oc_order.shipping_company as 'Shipping Company Name',
- oc_order.shipping_address_1 as 'Shipping Address Line 1',
- oc_order.shipping_address_2 as 'Shipping Address Line 1',
- oc_order.shipping_city as 'Shipping City',
- oc_order.shipping_postcode as 'Shipping Postal Code',
- oc_order.shipping_country as 'Shipping Country'
+ oc_order.shipping_lastname as 'Last Name',
+ oc_order.shipping_company as 'Company Name',
+ oc_order.shipping_address_1 as 'Address Line 1',
+ oc_order.shipping_address_2 as 'Address Line 2',
+ oc_order.shipping_city as 'City',
+ oc_order.shipping_postcode as 'Postal Code',
+ oc_order.shipping_country as 'Country'
 FROM 
  oc_customer AS cust, 
  oc_customer_affiliate as af,
