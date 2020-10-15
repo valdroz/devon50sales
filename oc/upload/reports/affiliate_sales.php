@@ -17,15 +17,25 @@ define ("FILENAME", "scout_sales"); //Export default filename
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
 SELECT 
- cust.firstname as 'First Name', 
- cust.lastname as 'Last Name', 
- gr.name as 'Group', 
- cust.email as 'Email', 
+ cust.customer_id as 'Scout ID',
+ cust.firstname as 'Scout First Name',
+ cust.lastname as 'Scout Last Name',
+ gr.name as 'Group',
+ cust.email as 'Email',
  oc_order.date_added as 'Order Date',
+ oc_order.order_id as 'Order ID',
  prod.name as 'Product Name',
  prod.price as 'Product Price',
  prod.quantity as 'Quantity',
- prod.total as 'Total'
+ prod.total as 'Total',
+ oc_order.shipping_firstname as 'Shipping First Name',
+ oc_order.shipping_lastname as 'Shipping Last Name',
+ oc_order.shipping_company as 'Shipping Company Name',
+ oc_order.shipping_address_1 as 'Shipping Address Line 1',
+ oc_order.shipping_address_2 as 'Shipping Address Line 1',
+ oc_order.shipping_city as 'Shipping City',
+ oc_order.shipping_postcode as 'Shipping Postal Code',
+ oc_order.shipping_country as 'Shipping Country'
 FROM 
  oc_customer AS cust, 
  oc_customer_affiliate as af,

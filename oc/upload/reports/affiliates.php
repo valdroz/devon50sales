@@ -16,7 +16,7 @@ define ("FILENAME", "affiliates"); //Export default filename
 
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
-SELECT af.customer_id as 'Customer ID', 
+SELECT af.customer_id as 'Scout ID',
  cust.firstname as 'First Name',
  cust.lastname as 'Last Name',
  cust.email as 'Email',

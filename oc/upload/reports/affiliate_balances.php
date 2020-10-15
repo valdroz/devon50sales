@@ -16,20 +16,22 @@ define ("FILENAME", "transactions"); //Export default filename
 
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
-SELECT 
- cust.firstname as 'First Name', 
- cust.lastname as 'Last Name', 
- gr.name as 'Group', 
- cust.email as 'Email', 
- tr.tr_count as 'Count',
- IF ( ( tr.amount - 100 ) < 0, 0, tr.amount - 100 ) as 'Balance' ,
+SELECT
+ af.customer_id as 'Scout ID',
+ cust.firstname as 'First Name',
+ cust.lastname as 'Last Name',
+ gr.name as 'Group',
+ cust.email as 'Email',
+ tr.tr_count as 'Transaction Count',
+ IF ( ( tr.amount - 100 ) < 0, 0, tr.amount - 100 ) as 'Commision' ,
  af.commission as 'Commission %'
-FROM 
- oc_customer AS cust, 
+FROM
+ oc_customer AS cust,
  oc_customer_affiliate as af,
- (SELECT tr1.customer_id,  count(*) as tr_count, sum(tr1.amount) as amount FROM oc_customer_transaction AS tr1 GROUP BY tr1.customer_id) AS tr, 
- oc_customer_group_description AS gr 
+ (SELECT tr1.customer_id,  count(*) as tr_count, sum(tr1.amount) as amount FROM oc_customer_transaction AS tr1 GROUP BY tr1.customer_id) AS tr,
+ oc_customer_group_description AS gr
 WHERE tr.customer_id = cust.customer_id AND cust.customer_group_id = gr.customer_group_id AND af.customer_id = cust.customer_id
+
 ");
 
 
