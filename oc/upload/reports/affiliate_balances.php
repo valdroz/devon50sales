@@ -23,7 +23,7 @@ SELECT
  gr.name as 'Group',
  cust.email as 'Email',
  tr.tr_count as 'Transaction Count',
- IF ( ( tr.amount - 100 ) < 0, 0, tr.amount - 100 ) as 'Commision' ,
+ IF ( ( tr.amount - 100 ) < 0, 0, tr.amount - 100 ) as 'Commission' ,
  af.commission as 'Commission %'
 FROM
  oc_customer AS cust,
