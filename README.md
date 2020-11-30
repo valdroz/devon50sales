@@ -35,4 +35,4 @@ root@{dockerhost}:/ chown -R www-data:www-data /var/www
 ```
 
 
-4. Your OS SandBox environment is ready.
+4. Your OC SandBox environment is ready.
