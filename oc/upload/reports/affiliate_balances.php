@@ -71,7 +71,7 @@ if($_GET["pw"]==PASSWORD){
 
         //Download headers
         //header("Content-type: application/octet-stream");
-        header("Content-type: test/csv");
+        header("Content-type: text/csv");
         header("Content-Disposition: attachment; filename=".FILENAME."-".date("Y_m_d-Hi_s").".csv");
         header("Pragma: no-cache");
         header("Expires: 0");
