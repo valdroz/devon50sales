@@ -468,6 +468,25 @@ class ControllerMailOrder extends Controller {
 					$mail->send();
 				}
 			}
+
+			// DEVON50
+			try {
+				$affiliate_id = $order_info['affiliate_id'];
+				if ($affiliate_id) {
+					$this->load->model('account/customer');
+					$affiliate_info = $this->model_account_customer->getCustomer($affiliate_id);
+					$this->log->write('INFO: Sending order notification to scout: ' . $affiliate_info['email']);
+					if ($affiliate_info['email']) {
+							$mail->setText($this->load->view('mail/order_alert_to_affiliate', $data));
+							$mail->setTo($affiliate_info['email']);
+							$mail->send();
+						}
+					}
+				}
+			catch (Throwable $e) {
+				$this->log->write('Error sending email to Scout: ' . $affiliate_id . "; Error: " . $e);
+			}
+
 		}
 	}
 }
