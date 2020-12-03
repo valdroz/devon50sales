@@ -57,7 +57,7 @@ SELECT
         oc_order.order_id as 'Order ID',
         oc_order.invoice_no as 'Invoice #',
         oc_order.affiliate_id as 'Scout ID',
-        concat(oc_order.lastname, ', ', oc_order.firstname) as 'Full Name',
+        concat('\"',oc_order.lastname, ', ', oc_order.firstname,'\"') as 'Full Name',
         oc_order.email as 'Email',
         oc_order.telephone as 'Phone',
         DATE_FORMAT(oc_order.date_added,'%m/%d/%Y') as 'Order Date',
