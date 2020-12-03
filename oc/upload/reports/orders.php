@@ -108,6 +108,8 @@ if($_GET["pw"]==PASSWORD){
                     $value = ",";
                 } else {
                     //Escape all the special characters
+                    $value = strip_tags(str_replace('\n', '\\n', $value));
+                    $value = strip_tags(str_replace('\r', '', $value));
                     $value = strip_tags(str_replace('"', '""', $value));
                     $value = '"' . $value . '"' . ",";
                 }
