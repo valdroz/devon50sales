@@ -56,35 +56,20 @@ define ("SQL","
 SELECT
         oc_order.order_id as 'Order ID',
         oc_order.invoice_no as 'Invoice #',
-        firstname as 'First Name',
-        lastname as 'Last Name',
-        email as 'Email',
-        telephone as 'Phone',
-        DATE_FORMAT(oc_order.date_added,'%m/%d/%Y') as 'Added On',
-        DATE_FORMAT(oc_order.date_modified,'%m/%d/%Y') as 'Updated On',
+        oc_order.affiliate_id as 'Scout ID',
+        concat(oc_order.lastname, ', ', oc_order.firstname) as 'Full Name',
+        oc_order.email as 'Email',
+        oc_order.telephone as 'Phone',
+        DATE_FORMAT(oc_order.date_added,'%m/%d/%Y') as 'Order Date',
         oc_order.total AS 'Order Total',
-        currency_code as 'Currency',
         oc_order_status.name AS 'Order Status',
         oc_order_product.name AS 'Product Name',
         oc_order_product.model AS 'Product Model',
         oc_order_product.quantity AS 'Quantity',
         oc_order_product.total AS 'Product Total',
         oc_order_product.tax AS 'Tax',
-        custom_field,
-        payment_method as 'Payment Method',
---         payment_code,
---         payment_firstname,
---         payment_lastname,
---         payment_company,
---         payment_address_1,
---         payment_address_2,
---         payment_city,
---         payment_zone,
---         payment_postcode,
---         payment_country,
---         payment_custom_field,
-        shipping_method as 'Shipping Method',
---         shipping_code,
+        oc_order.payment_method as 'Payment Method',
+        oc_order.shipping_method as 'Shipping Method',
          oc_order.shipping_firstname as 'Shipping: First Name',
          oc_order.shipping_lastname as 'Last Name',
          oc_order.shipping_company as 'Company Name',
@@ -93,17 +78,12 @@ SELECT
          oc_order.shipping_city as 'City',
          oc_order.shipping_postcode as 'Postal Code',
          oc_order.shipping_country as 'Country',
-        -- shipping_custom_field,
         comment as 'Comments'
 FROM ocdevon.oc_order
 LEFT JOIN oc_order_product ON oc_order.order_id = oc_order_product.order_id
 LEFT JOIN oc_order_status ON oc_order.order_status_id = oc_order_status.order_status_id
-LEFT JOIN oc_order_option ON oc_order_product.order_product_id = oc_order_option.order_product_id
 WHERE oc_order_status.order_status_id > 0
-ORDER BY
-        oc_order.order_id,
-        oc_order_product.product_id,
-        oc_order_option.product_option_id ASC
+ORDER BY oc_order.order_id, oc_order_product.product_id ASC
 
 ");
 
