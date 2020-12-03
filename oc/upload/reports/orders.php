@@ -97,19 +97,19 @@ if($_GET["pw"]==PASSWORD){
 
         //Fetch the column names
         $columns = mysqli_fetch_fields($setRec);
-        foreach($columns as $column){
-                $setMainHeader .= $column->name.",";
+        foreach($columns as $column) {
+            $setMainHeader .= $column->name.",";
         }
 
-        while($rec = mysqli_fetch_row($setRec))  {
+        while($rec = mysqli_fetch_row($setRec)) {
           $rowLine = '';
           foreach($rec as $value)       {
-                if(!isset($value) || $value == "")  {
-                  $value = ",";
-                }   else  {
-        //Escape all the special characters
-                  $value = strip_tags(str_replace('"', '""', $value));
-                  $value = ''.$value . '' . ",";
+                if (!isset($value) || $value == "") {
+                    $value = ",";
+                } else {
+                    //Escape all the special characters
+                    $value = strip_tags(str_replace('"', '""', $value));
+                    $value = '"' . $value . '"' . ",";
                 }
                 $rowLine .= $value;
           }
