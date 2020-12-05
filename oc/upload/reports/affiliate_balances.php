@@ -16,21 +16,63 @@ define ("FILENAME", "transactions"); //Export default filename
 
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
-SELECT
- af.customer_id as 'Scout ID',
- cust.firstname as 'First Name',
- cust.lastname as 'Last Name',
- gr.name as 'Group',
- cust.email as 'Email',
- tr.tr_count as 'Transaction Count',
- IF ( ( tr.amount - 100 ) < 0, 0, tr.amount - 100 ) as 'Commission' ,
- af.commission as 'Commission %'
-FROM
- oc_customer AS cust,
- oc_customer_affiliate as af,
- (SELECT tr1.customer_id,  count(*) as tr_count, sum(tr1.amount) as amount FROM oc_customer_transaction AS tr1 GROUP BY tr1.customer_id) AS tr,
- oc_customer_group_description AS gr
-WHERE tr.customer_id = cust.customer_id AND cust.customer_group_id = gr.customer_group_id AND af.customer_id = cust.customer_id
+(SELECT 
+	cust.customer_id as ID,
+	concat(cust.firstname, ' ', cust.lastname) as 'Scout Full Name',
+	gr.name as 'Group',
+	cust.email as 'Email',
+	prod.name as Product,
+	sum(prod.total) as 'Total'
+ FROM 
+	oc_customer AS cust, 
+ 	oc_customer_affiliate as af,
+	oc_customer_transaction AS tr, 
+	oc_customer_group_description AS gr,
+	oc_order_product as prod,
+	oc_order
+WHERE 
+	tr.customer_id = cust.customer_id AND 
+	cust.customer_group_id = gr.customer_group_id AND 
+    af.customer_id = cust.customer_id AND
+    prod.order_id = tr.order_id AND
+    oc_order.order_id = tr.order_id
+
+GROUP BY
+	cust.customer_id,
+    concat(cust.firstname, ' ', cust.lastname),
+	gr.name,     
+	cust.email,
+    prod.name
+)    
+UNION 
+
+( SELECT 
+	cust.customer_id,
+	concat(cust.firstname, ' ', cust.lastname) as 'Scout Full Name',
+	gr.name as 'Group',
+	cust.email as 'Email',
+	' _Total',
+	sum(prod.total) as 'Total'
+ FROM 
+	oc_customer AS cust, 
+ 	oc_customer_affiliate as af,
+	oc_customer_transaction AS tr, 
+	oc_customer_group_description AS gr,
+	oc_order_product as prod,
+	oc_order
+WHERE 
+	tr.customer_id = cust.customer_id AND 
+	cust.customer_group_id = gr.customer_group_id AND 
+    af.customer_id = cust.customer_id AND
+    prod.order_id = tr.order_id AND
+    oc_order.order_id = tr.order_id
+
+GROUP BY
+	cust.customer_id,
+    concat(cust.firstname, ' ', cust.lastname),
+	gr.name,     
+	cust.email
+) ORDER BY ID,Product desc
 
 ");
 
