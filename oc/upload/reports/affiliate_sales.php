@@ -48,7 +48,7 @@ WHERE tr.customer_id = cust.customer_id AND
     af.customer_id = cust.customer_id AND
     prod.order_id = tr.order_id AND
     oc_order.order_id = tr.order_id
- ORDER BY cust.customer_id
+ORDER BY cust.customer_id asc, oc_order.date_added desc
  ");
 
 
