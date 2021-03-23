@@ -10,12 +10,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apache2 mysql-server net-t
         apt-get clean 
 
 ADD ./files/prep-mysql.sh .
+RUN cat /etc/mysql/mysql.conf.d/mysqld.cnf | sed 's/127\.0\.0\.1/0\.0\.0\.0/g' > /etc/mysql/mysql.conf.d/mysqld.cnf
 RUN service mysql restart && sleep 10 && sh /prep-mysql.sh
 
 RUN mkdir /upload
 COPY ./oc/upload /upload/
 
 ADD ./files/oc-install.sh .
+RUN chmod a+x oc-install.sh
 
 EXPOSE 80
 
