@@ -17,6 +17,8 @@ RUN mkdir /upload
 COPY ./oc/upload /upload/
 
 ADD ./files/oc-install.sh .
+RUN chmod a+x oc-install.sh
+
 
 EXPOSE 80
 
