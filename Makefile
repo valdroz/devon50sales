@@ -5,4 +5,4 @@ build:
 run:
 	PWD=$(pwd)
 	docker rm ocdevon || true
-	docker run -it -p 80:80 -p 3306:3306 -v "${PWD}/www:/var/www" --name ocdevon ocdevon
+	docker run -it -p 8080:80 -p 3306:3306 -v "${PWD}/www:/var/www" -v "${PWD}/oc/upload:/root/source" --name ocdevon ocdevon
