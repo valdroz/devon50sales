@@ -13,6 +13,8 @@ ADD ./files/prep-mysql.sh .
 RUN cat /etc/mysql/mysql.conf.d/mysqld.cnf | sed 's/127\.0\.0\.1/0\.0\.0\.0/g' > /etc/mysql/mysql.conf.d/mysqld.cnf
 RUN service mysql restart && sleep 10 && sh /prep-mysql.sh
 
+RUN cat /etc/php/7.4/apache2/php.ini | sed -e 's/post_max_size.*/post_max_size = 999M/' | sed -e 's/upload_max_filesize.*/upload_max_filesize = 999M/' > /etc/php/7.4/apache2/php.ini
+
 RUN mkdir /upload
 COPY ./oc/upload /upload/
 
