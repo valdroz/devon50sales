@@ -3,6 +3,9 @@ class ControllerAccountEntersale extends Controller {
 	private $error = array();
 
 	public function index() {
+
+		$this->config->set('template_cache', false);
+
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/account', '', true);
 
@@ -41,8 +44,8 @@ class ControllerAccountEntersale extends Controller {
 		);
 
 		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_edit'),
-			'href' => $this->url->link('account/edit', '', true)
+			'text' => $this->language->get('text_entersale'),
+			'href' => $this->url->link('account/entersale', '', true)
 		);
 
 		if (isset($this->error['warning'])) {
@@ -50,6 +53,9 @@ class ControllerAccountEntersale extends Controller {
 		} else {
 			$data['error_warning'] = '';
 		}
+
+
+		$data['order_date'] = '2021-07-10';
 
 		if (isset($this->error['firstname'])) {
 			$data['error_firstname'] = $this->error['firstname'];
@@ -81,7 +87,7 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_custom_field'] = array();
 		}
 
-		$data['action'] = $this->url->link('account/edit', '', true);
+		$data['action'] = $this->url->link('account/entersale', '', true);
 
 		if ($this->request->server['REQUEST_METHOD'] != 'POST') {
 			$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
@@ -149,7 +155,7 @@ class ControllerAccountEntersale extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->response->setOutput($this->load->view('account/edit', $data));
+		$this->response->setOutput($this->load->view('account/entersale', $data));
 	}
 
 	protected function validate() {

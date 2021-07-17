@@ -64,7 +64,7 @@ class ControllerAccountAccount extends Controller {
 		
 		$data['return'] = $this->url->link('account/return', '', true);
 		$data['transaction'] = $this->url->link('account/transaction', '', true);
-		$data['sales'] = $this->url->link('account/sales', '', true);
+		
 		$data['newsletter'] = $this->url->link('account/newsletter', '', true);
 		$data['recurring'] = $this->url->link('account/recurring', '', true);
 		
@@ -78,10 +78,14 @@ class ControllerAccountAccount extends Controller {
 			$data['affiliate'] = $this->url->link('account/affiliate/edit', '', true);
 		}
 		
-		if ($affiliate_info) {		
+		if ($affiliate_info) {
+			$data['sales'] = $this->url->link('account/sales', '', true);
 			$data['tracking'] = $this->url->link('account/tracking', '', true);
+			$data['entersale'] = $this->url->link('account/entersale', '', true);
 		} else {
+			$data['sales'] = '';
 			$data['tracking'] = '';
+			$data['entersale'] = '';
 		}
 		
 		$data['column_left'] = $this->load->controller('common/column_left');

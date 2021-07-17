@@ -1,10 +1,18 @@
 <?php
 // Heading
-$_['heading_title']      = 'My Account Information';
+$_['heading_title']      = 'Enter your check or cash sale';
 
 // Text
 $_['text_account']       = 'Account';
-$_['text_edit']          = 'Edit Information';
+$_['text_entersale']          = 'Enter sale';
+$_['entry_order_date']          = 'The date sale was made';
+
+
+
+
+
+
+
 $_['text_your_details']  = 'Your Personal Details';
 $_['text_success']       = 'Success: Your account has been successfully updated.';
 
