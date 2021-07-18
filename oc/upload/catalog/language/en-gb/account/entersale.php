@@ -4,10 +4,13 @@ $_['heading_title']      = 'Enter your check or cash sale';
 
 // Text
 $_['text_account']       = 'Account';
-$_['text_entersale']          = 'Enter sale';
-$_['entry_order_date']          = 'The date sale was made';
+$_['text_entersale']        = 'Enter sale';
+$_['entry_order_date']      = 'The date sale was made';
+$_['entry_payment_company']      = 'Company name if applicable';
+$_['entry_payment_firstname']    = 'Buyer\'s First Name';
+$_['entry_payment_lastname']     = 'Buyer\'s Last Name';
 
-
+$_['entry_all_correct']         = 'All correct?';
 
 
 
@@ -17,8 +20,6 @@ $_['text_your_details']  = 'Your Personal Details';
 $_['text_success']       = 'Success: Your account has been successfully updated.';
 
 // Entry
-$_['entry_firstname']    = 'First Name';
-$_['entry_lastname']     = 'Last Name';
 $_['entry_email']        = 'E-Mail';
 $_['entry_telephone']    = 'Telephone';
 

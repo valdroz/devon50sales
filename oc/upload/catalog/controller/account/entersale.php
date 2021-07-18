@@ -24,7 +24,7 @@ class ControllerAccountEntersale extends Controller {
 		$this->load->model('account/customer');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-			$this->model_account_customer->editCustomer($this->customer->getId(), $this->request->post);
+			//$this->model_account_customer->editCustomer($this->customer->getId(), $this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -55,18 +55,24 @@ class ControllerAccountEntersale extends Controller {
 		}
 
 
-		$data['order_date'] = '2021-07-10';
+		$data['order_date'] = '';
 
-		if (isset($this->error['firstname'])) {
-			$data['error_firstname'] = $this->error['firstname'];
+		if (isset($this->error['order_date'])) {
+			$data['error_order_date'] = $this->error['order_date'];
 		} else {
-			$data['error_firstname'] = '';
+			$data['error_order_date'] = '';
+		}
+
+		if (isset($this->error['payment_firstname'])) {
+			$data['error_payment_firstname'] = $this->error['payment_firstname'];
+		} else {
+			$data['error_payment_firstname'] = '';
 		}
 
 		if (isset($this->error['lastname'])) {
-			$data['error_lastname'] = $this->error['lastname'];
+			$data['error_payment_lastname'] = $this->error['payment_lastname'];
 		} else {
-			$data['error_lastname'] = '';
+			$data['error_payment_lastname'] = '';
 		}
 
 		if (isset($this->error['email'])) {

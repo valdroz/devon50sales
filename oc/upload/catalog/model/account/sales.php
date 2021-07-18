@@ -19,7 +19,8 @@ class ModelAccountSales extends Model {
 		 oc_order.shipping_address_2 as sh_addr_line_2,
 		 oc_order.shipping_city as sh_city,
 		 oc_order.shipping_postcode as sh_postcode,
-		 oc_order.shipping_country as sh_country
+		 oc_order.shipping_country as sh_country,
+		 oc_order.payment_method as payment_method
 		FROM 
 		 oc_customer AS cust, 
 		 oc_customer_affiliate as af,

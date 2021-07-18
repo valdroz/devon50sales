@@ -17,6 +17,7 @@ $_['column_sh_addr_line_2']      = 'Line 2';
 $_['column_sh_city']      = 'City';
 $_['column_sh_postcode']      = 'Post Code';
 $_['column_sh_country']      = 'Country';
+$_['column_payment_method'] = 'Payment Method';
 
 // Text
 $_['text_account']       = 'Account';

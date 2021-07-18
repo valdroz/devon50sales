@@ -25,35 +25,56 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-oders-date">{{ entry_order_date }}</label>
             <div class="col-sm-2 input-group date" style="padding-left: 15px">
-              <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}" data-date-format="YYYY-MM-DD" id="input-order-date" class="form-control" />
+              <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}" data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" />
               <span class="input-group-btn">
               <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
               </span></div>
+              {% if error_order_date %}
+              <div class="text-danger">{{ error_order_date }}</div>
+              {% endif %}
           </div>
 
           
           <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-firstname">{{ entry_firstname }} </label>
-            <div class="col-sm-10">
-              <input type="text" name="firstname" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" />
-              {% if error_firstname %}
-              <div class="text-danger">{{ error_firstname }}</div>
+            <label class="col-sm-2 control-label" for="input-firstname">{{ entry_payment_firstname }} </label>
+            <div class="col-sm-4">
+              <input type="text" name="payment_firstname" value="{{ payment_firstname }}" placeholder="{{ entry_payment_firstname }}" id="input-payment-firstname" class="form-control" />
+              {% if error_payment_firstname %}
+              <div class="text-danger">{{ error_payment_firstname }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-lastname">{{ entry_payment_lastname }} </label>
+            <div class="col-sm-4">
+              <input type="text" name="payment_lastname" value="{{ payment_lastname }}" placeholder="{{ entry_payment_lastname }}" id="input-payment-lastname" class="form-control" />
+              {% if error_payment_lastname %}
+              <div class="text-danger">{{ error_payment_lastname }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group ">
+            <label class="col-sm-2 control-label" for="input-company">{{ entry_payment_company }} </label>
+            <div class="col-sm-4">
+              <input type="text" name="payment_company" value="{{ payment_company }}" placeholder="{{ entry_payment_company }}" id="input-company" class="form-control" />
+              {% if error_payment_company %}
+              <div class="text-danger">{{ error_payment_company }}</div>
               {% endif %}
             </div>
           </div>
 
 
-      
           <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-email">{{ entry_email }}</label>
-            <div class="col-sm-10">
-              <input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
-              {% if error_email %}
-              <div class="text-danger">{{ error_email }}</div>
-              {% endif %}
+            <label class="col-sm-2 control-label" for="input-company">{{ entry_all_correct }} </label>
+            <div class="col-sm-4" style="padding-top: 7px">
+              <input type="checkbox" name="all_correct" value="all_correct" />
             </div>
           </div>
-          <div class="form-group required">
+
+
+          {# <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }}</label>
             <div class="col-sm-10">
               <input type="tel" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
@@ -61,7 +82,10 @@
               <div class="text-danger">{{ error_telephone }}</div>
               {% endif %}
             </div>
-          </div>
+          </div> #}
+
+
+{#          
           {% for custom_field in custom_fields %}
           {% if custom_field.type == 'select' %}
           <div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">
@@ -213,11 +237,15 @@
           </div>
           {% endif %}
           {% endfor %}
+
+
+#}
+
         </fieldset>
         <div class="buttons clearfix">
           <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>
           <div class="pull-right">
-            <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+            <input type="submit" value="{{ button_continue }}" class="btn btn-primary" disabled />
           </div>
         </div>
       </form>

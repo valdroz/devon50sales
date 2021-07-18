@@ -68,7 +68,8 @@ class ControllerAccountSales extends Controller {
 				'sh_addr_line_2' => $result['sh_addr_line_2'],
 				'sh_city' => $result['sh_city'],
 				'sh_postcode' => $result['sh_postcode'],
-				'sh_country' => $result['sh_country']
+				'sh_country' => $result['sh_country'],
+				'payment_method' => $result['payment_method']
 			);
 		}
 
