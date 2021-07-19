@@ -87,6 +87,12 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_telephone'] = '';
 		}
 
+		$wreath_info = $this->model_account_entersale->getProductInfo(50);
+
+		$data['wreath_name'] = $wreath_info['name'];
+		$data['wreath_price'] = $wreath_info['price'];
+
+
 		if (isset($this->error['custom_field'])) {
 			$data['error_custom_field'] = $this->error['custom_field'];
 		} else {
