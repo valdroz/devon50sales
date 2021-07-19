@@ -21,7 +21,7 @@ class ControllerAccountEntersale extends Controller {
 		$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
 		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 
-		$this->load->model('account/customer');
+		$this->load->model('account/entersale');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			//$this->model_account_customer->editCustomer($this->customer->getId(), $this->request->post);
@@ -95,62 +95,62 @@ class ControllerAccountEntersale extends Controller {
 
 		$data['action'] = $this->url->link('account/entersale', '', true);
 
-		if ($this->request->server['REQUEST_METHOD'] != 'POST') {
-			$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
-		}
+		// if ($this->request->server['REQUEST_METHOD'] != 'POST') {
+		// 	$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
+		// }
 
-		if (isset($this->request->post['firstname'])) {
-			$data['firstname'] = $this->request->post['firstname'];
-		} elseif (!empty($customer_info)) {
-			$data['firstname'] = $customer_info['firstname'];
-		} else {
-			$data['firstname'] = '';
-		}
+		// if (isset($this->request->post['firstname'])) {
+		// 	$data['firstname'] = $this->request->post['firstname'];
+		// } elseif (!empty($customer_info)) {
+		// 	$data['firstname'] = $customer_info['firstname'];
+		// } else {
+		// 	$data['firstname'] = '';
+		// }
 
-		if (isset($this->request->post['lastname'])) {
-			$data['lastname'] = $this->request->post['lastname'];
-		} elseif (!empty($customer_info)) {
-			$data['lastname'] = $customer_info['lastname'];
-		} else {
-			$data['lastname'] = '';
-		}
+		// if (isset($this->request->post['lastname'])) {
+		// 	$data['lastname'] = $this->request->post['lastname'];
+		// } elseif (!empty($customer_info)) {
+		// 	$data['lastname'] = $customer_info['lastname'];
+		// } else {
+		// 	$data['lastname'] = '';
+		// }
 
-		if (isset($this->request->post['email'])) {
-			$data['email'] = $this->request->post['email'];
-		} elseif (!empty($customer_info)) {
-			$data['email'] = $customer_info['email'];
-		} else {
-			$data['email'] = '';
-		}
+		// if (isset($this->request->post['email'])) {
+		// 	$data['email'] = $this->request->post['email'];
+		// } elseif (!empty($customer_info)) {
+		// 	$data['email'] = $customer_info['email'];
+		// } else {
+		// 	$data['email'] = '';
+		// }
 
-		if (isset($this->request->post['telephone'])) {
-			$data['telephone'] = $this->request->post['telephone'];
-		} elseif (!empty($customer_info)) {
-			$data['telephone'] = $customer_info['telephone'];
-		} else {
-			$data['telephone'] = '';
-		}
+		// if (isset($this->request->post['telephone'])) {
+		// 	$data['telephone'] = $this->request->post['telephone'];
+		// } elseif (!empty($customer_info)) {
+		// 	$data['telephone'] = $customer_info['telephone'];
+		// } else {
+		// 	$data['telephone'] = '';
+		// }
 
 		// Custom Fields
 		$data['custom_fields'] = array();
 		
-		$this->load->model('account/custom_field');
+		// $this->load->model('account/custom_field');
 
-		$custom_fields = $this->model_account_custom_field->getCustomFields($this->config->get('config_customer_group_id'));
+		// $custom_fields = $this->model_account_custom_field->getCustomFields($this->config->get('config_customer_group_id'));
 
-		foreach ($custom_fields as $custom_field) {
-			if ($custom_field['location'] == 'account') {
-				$data['custom_fields'][] = $custom_field;
-			}
-		}
+		// foreach ($custom_fields as $custom_field) {
+		// 	if ($custom_field['location'] == 'account') {
+		// 		$data['custom_fields'][] = $custom_field;
+		// 	}
+		// }
 
-		if (isset($this->request->post['custom_field']['account'])) {
-			$data['account_custom_field'] = $this->request->post['custom_field']['account'];
-		} elseif (isset($customer_info)) {
-			$data['account_custom_field'] = json_decode($customer_info['custom_field'], true);
-		} else {
-			$data['account_custom_field'] = array();
-		}
+		// if (isset($this->request->post['custom_field']['account'])) {
+		// 	$data['account_custom_field'] = $this->request->post['custom_field']['account'];
+		// } elseif (isset($customer_info)) {
+		// 	$data['account_custom_field'] = json_decode($customer_info['custom_field'], true);
+		// } else {
+		// 	$data['account_custom_field'] = array();
+		// }
 
 		$data['back'] = $this->url->link('account/account', '', true);
 

@@ -168,4 +168,16 @@ class ModelAccountEntersale extends Model {
 
 		return $query->row['total'];
 	}
+
+	public function getProductInfo($product_id) {
+		$query = $this->db->query("SELECT product_id, model, price `" . DB_PREFIX . "oc_product` WHERE product_id = " . (int)$product_id);
+
+		return array(
+			"product_id" => $query->row['product_id'],
+			"model" => $query->row['name'],
+			"price" => $query->row['price']
+		);
+	}
+
+
 }

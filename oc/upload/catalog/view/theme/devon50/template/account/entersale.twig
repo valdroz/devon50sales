@@ -25,10 +25,11 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-oders-date">{{ entry_order_date }}</label>
             <div class="col-sm-2 input-group date" style="padding-left: 15px">
-              <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}" data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" />
+              <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}"          data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" />
               <span class="input-group-btn">
-              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-              </span></div>
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
               {% if error_order_date %}
               <div class="text-danger">{{ error_order_date }}</div>
               {% endif %}
@@ -61,6 +62,25 @@
               <input type="text" name="payment_company" value="{{ payment_company }}" placeholder="{{ entry_payment_company }}" id="input-company" class="form-control" />
               {% if error_payment_company %}
               <div class="text-danger">{{ error_payment_company }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group ">
+            <label class="col-sm-2 control-label" for="input-wreath"> Enter {{ wreath_name }} quatity </label>
+            <div class="col-sm-2">
+              <table>
+                <tr>
+                  <td>
+                    <input type="text" name="wreath_quantity" value="{{ wreath_quantity }}" placeholder="Quantity" id="input-wreath-quatity" class="form-control"  />
+                  </td>
+                  <td>
+                    <span style="position: relative" class="form-control" >$22.00 {{wreath_price}} </span>
+                  </td>
+                </tr>
+              </table>
+              {% if error_wreath_quantity %}
+              <div class="text-danger">{{ error_wreath_quantity }}</div>
               {% endif %}
             </div>
           </div>
