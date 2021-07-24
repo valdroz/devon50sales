@@ -55,13 +55,12 @@ class ControllerAccountEntersale extends Controller {
 		}
 
 
-		$data['order_date'] = '';
-
 		if (isset($this->error['order_date'])) {
 			$data['error_order_date'] = $this->error['order_date'];
 		} else {
 			$data['error_order_date'] = '';
 		}
+
 
 		if (isset($this->error['payment_firstname'])) {
 			$data['error_payment_firstname'] = $this->error['payment_firstname'];
@@ -69,7 +68,7 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_payment_firstname'] = '';
 		}
 
-		if (isset($this->error['lastname'])) {
+		if (isset($this->error['payment_lastname'])) {
 			$data['error_payment_lastname'] = $this->error['payment_lastname'];
 		} else {
 			$data['error_payment_lastname'] = '';
@@ -79,6 +78,42 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_email'] = $this->error['email'];
 		} else {
 			$data['error_email'] = '';
+		}
+
+		if (isset($this->error['address_1'])) {
+			$data['error_address_1'] = $this->error['address_1'];
+		} else {
+			$data['error_address_1'] = '';
+		}
+
+		if (isset($this->error['address_2'])) {
+			$data['error_address_2'] = $this->error['address_2'];
+		} else {
+			$data['error_address_2'] = '';
+		}
+
+		if (isset($this->error['city'])) {
+			$data['error_city'] = $this->error['city'];
+		} else {
+			$data['error_city'] = '';
+		}
+		
+		if (isset($this->error['postcode'])) {
+			$data['error_postcode'] = $this->error['postcode'];
+		} else {
+			$data['error_postcode'] = '';
+		}
+
+		if (isset($this->error['country'])) {
+			$data['error_country'] = $this->error['country'];
+		} else {
+			$data['error_country'] = '';
+		}
+
+		if (isset($this->error['zone'])) {
+			$data['error_zone'] = $this->error['zone'];
+		} else {
+			$data['error_zone'] = '';
 		}
 
 		if (isset($this->error['telephone'])) {
@@ -92,12 +127,120 @@ class ControllerAccountEntersale extends Controller {
 		$data['wreath_name'] = $wreath_info['name'];
 		$data['wreath_price'] = $wreath_info['price'];
 
+		$swag_info = $this->model_account_entersale->getProductInfo(51);
 
-		if (isset($this->error['custom_field'])) {
-			$data['error_custom_field'] = $this->error['custom_field'];
+		$data['swag_name'] = $swag_info['name'];
+		$data['swag_price'] = $swag_info['price'];
+
+		$donate_info = $this->model_account_entersale->getProductInfo(53);
+
+		$data['donate_name'] = $donate_info['name'];
+		$data['donate_price'] = $donate_info['price'];
+
+
+		$this->load->model('localisation/country');
+
+		$data['countries'] = $this->model_localisation_country->getCountries();	
+		
+		//$country = $this->model_localisation_country->getCountry($this->config->get('config_country_id'));
+		
+		if (isset($this->request->post['order_date'])) {
+			$data['order_date'] = $this->request->post['order_date'];
 		} else {
-			$data['error_custom_field'] = array();
+			$data['order_date'] = date_format(date_create(),"m/d/Y");
 		}
+
+		if (isset($this->request->post['country_id'])) {
+			$data['country_id'] = $this->request->post['country_id'];
+		} else {
+			$data['country_id'] = $this->config->get('config_country_id');
+		}
+
+		if (isset($this->request->post['zone_id'])) {
+			$data['zone_id'] = $this->request->post['zone_id'];
+		} else {
+			$data['zone_id'] = $this->config->get('config_zone_id');
+		}
+
+		if (isset($this->request->post['payment_firstname'])) {
+			$data['payment_firstname'] = $this->request->post['payment_firstname']; 
+		} else {
+			$data['payment_firstname'] = '';
+		}
+
+		if (isset($this->request->post['payment_lastname'])) {
+			$data['payment_lastname'] = $this->request->post['payment_lastname']; 
+		} else {
+			$data['payment_lastname'] = '';
+		}
+
+		if (isset($this->request->post['payment_company'])) {
+			$data['payment_company'] = $this->request->post['payment_company']; 
+		} else {
+			$data['payment_company'] = '';
+		}
+
+		if (isset($this->request->post['address_1'])) {
+			$data['address_1'] = $this->request->post['address_1']; 
+		} else {
+			$data['address_1'] = '';
+		}
+
+		if (isset($this->request->post['address_2'])) {
+			$data['address_2'] = $this->request->post['address_2']; 
+		} else {
+			$data['address_2'] = '';
+		}
+	
+		if (isset($this->request->post['city'])) {
+			$data['city'] = $this->request->post['city']; 
+		} else {
+			$data['city'] = '';
+		}
+		
+		if (isset($this->request->post['postcode'])) {
+			$data['postcode'] = $this->request->post['postcode']; 
+		} else {
+			$data['postcode'] = '';
+		}
+			
+		if (isset($this->request->post['country'])) {
+			$data['country'] = $this->request->post['country']; 
+		} else {
+			$data['country'] = '';
+		}
+
+		if (isset($this->request->post['zone'])) {
+			$data['zone'] = $this->request->post['zone']; 
+		} else {
+			$data['zone'] = '';
+		}
+
+		if (isset($this->request->post['wreath_quantity'])) {
+			$data['wreath_quantity'] = $this->request->post['wreath_quantity']; 
+		} else {
+			$data['wreath_quantity'] = '';
+		}
+
+		if (isset($this->request->post['swag_quantity'])) {
+			$data['swag_quantity'] = $this->request->post['swag_quantity']; 
+		} else {
+			$data['swag_quantity'] = '';
+		}
+
+		if (isset($this->request->post['donate_quantity'])) {
+			$data['donate_quantity'] = $this->request->post['donate_quantity']; 		
+		} else {
+			$data['donate_quantity'] = '';
+		}
+
+
+		// if (isset($this->error['custom_field'])) {
+		// 	$data['error_custom_field'] = $this->error['custom_field'];
+		// } else {
+		// 	$data['error_custom_field'] = array();
+		// }
+
 
 		$data['action'] = $this->url->link('account/entersale', '', true);
 
@@ -171,40 +314,44 @@ class ControllerAccountEntersale extends Controller {
 	}
 
 	protected function validate() {
-		if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
-			$this->error['firstname'] = $this->language->get('error_firstname');
+
+		// order_date
+
+
+		if ((utf8_strlen(trim($this->request->post['payment_firstname'])) < 1) || (utf8_strlen(trim($this->request->post['payment_firstname'])) > 32)) {
+			$this->error['payment_firstname'] = $this->language->get('error_payment_firstname');
 		}
 
-		if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
-			$this->error['lastname'] = $this->language->get('error_lastname');
+		if ((utf8_strlen(trim($this->request->post['payment_lastname'])) < 1) || (utf8_strlen(trim($this->request->post['payment_lastname'])) > 32)) {
+			$this->error['payment_lastname'] = $this->language->get('error_payment_lastname');
 		}
 
-		if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
-			$this->error['email'] = $this->language->get('error_email');
-		}
+		// if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
+		// 	$this->error['email'] = $this->language->get('error_email');
+		// }
 
-		if (($this->customer->getEmail() != $this->request->post['email']) && $this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
-			$this->error['warning'] = $this->language->get('error_exists');
-		}
+		// if (($this->customer->getEmail() != $this->request->post['email']) && $this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
+		// 	$this->error['warning'] = $this->language->get('error_exists');
+		// }
 
-		if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
-			$this->error['telephone'] = $this->language->get('error_telephone');
-		}
+		// if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
+		// 	$this->error['telephone'] = $this->language->get('error_telephone');
+		// }
 
-		// Custom field validation
-		$this->load->model('account/custom_field');
+		// // Custom field validation
+		// $this->load->model('account/custom_field');
 
-		$custom_fields = $this->model_account_custom_field->getCustomFields('account', $this->config->get('config_customer_group_id'));
+		// $custom_fields = $this->model_account_custom_field->getCustomFields('account', $this->config->get('config_customer_group_id'));
 
-		foreach ($custom_fields as $custom_field) {
-			if ($custom_field['location'] == 'account') {
-				if ($custom_field['required'] && empty($this->request->post['custom_field'][$custom_field['location']][$custom_field['custom_field_id']])) {
-					$this->error['custom_field'][$custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
-				} elseif (($custom_field['type'] == 'text') && !empty($custom_field['validation']) && !filter_var($this->request->post['custom_field'][$custom_field['location']][$custom_field['custom_field_id']], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $custom_field['validation'])))) {
-					$this->error['custom_field'][$custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
-				}
-			}
-		}
+		// foreach ($custom_fields as $custom_field) {
+		// 	if ($custom_field['location'] == 'account') {
+		// 		if ($custom_field['required'] && empty($this->request->post['custom_field'][$custom_field['location']][$custom_field['custom_field_id']])) {
+		// 			$this->error['custom_field'][$custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
+		// 		} elseif (($custom_field['type'] == 'text') && !empty($custom_field['validation']) && !filter_var($this->request->post['custom_field'][$custom_field['location']][$custom_field['custom_field_id']], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $custom_field['validation'])))) {
+		// 			$this->error['custom_field'][$custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
+		// 		}
+		// 	}
+		// }
 
 		return !$this->error;
 	}
