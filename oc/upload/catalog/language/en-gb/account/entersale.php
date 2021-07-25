@@ -22,9 +22,13 @@ $_['entry_zone']         = 'State or Region';
 $_['entry_email']        = 'E-Mail';
 $_['entry_telephone']    = 'Telephone';
 
+$_['entry_payment_method'] = "Payment method";
+
+$_['button_save']   = 'Save';
+$_['button_back']   = 'Cancel';
 
 // Error
-$_['error_delete']       = 'Warning: You must have at least one address.';
+$_['error_form']       = 'Required inputs are missing or not valid.';
 
 $_['error_payment_firstname']    = 'First Name must be between 1 and 32 characters.';
 $_['error_payment_lastname']     = 'Last Name must be between 1 and 32 characters.';
@@ -33,7 +37,11 @@ $_['error_postcode']     = 'Please enter valid zip code.';
 $_['error_city']         = 'City must be between 2 and 128 characters.';
 $_['error_country']      = 'Please select a country.';
 $_['error_zone']         = 'Please select a region / state.';
-$_['error_email']        = 'E-Mail Address does not appear to be valid!';
-$_['error_telephone']    = 'Telephone must be between 3 and 32 characters!';
+$_['error_email']        = 'E-Mail Address does not appear to be valid.';
+$_['error_telephone']    = 'Telephone must be between 3 and 32 characters.';
 
+$_['error_future_order_date'] = 'Order date cannot be in future.';
+$_['error_negative_quantity'] = 'Quantity cannot be negative.';
+$_['error_missing_quantity'] = 'Quanity for one of the items must be entered.';
+$_['error_payment_method'] = 'Please select valid payment mothod.';
 

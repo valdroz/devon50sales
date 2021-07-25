@@ -122,6 +122,30 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_telephone'] = '';
 		}
 
+		if (isset($this->error['wreath_quantity'])) {
+			$data['error_wreath_quantity'] = $this->error['wreath_quantity'];
+		} else {
+			$data['error_wreath_quantity'] = '';
+		}
+
+		if (isset($this->error['swag_quantity'])) {
+			$data['error_swag_quantity'] = $this->error['swag_quantity'];
+		} else {
+			$data['error_swag_quantity'] = '';
+		}
+
+		if (isset($this->error['donate_quantity'])) {
+			$data['error_donate_quantity'] = $this->error['donate_quantity'];
+		} else {
+			$data['error_donate_quantity'] = '';
+		}
+
+		if (isset($this->error['payment_method'])) {
+			$data['error_payment_method'] = $this->error['payment_method'];
+		} else {
+			$data['error_payment_method'] = '';
+		}
+
 		$wreath_info = $this->model_account_entersale->getProductInfo(50);
 
 		$data['wreath_name'] = $wreath_info['name'];
@@ -141,6 +165,7 @@ class ControllerAccountEntersale extends Controller {
 		$this->load->model('localisation/country');
 
 		$data['countries'] = $this->model_localisation_country->getCountries();	
+		$data['payment_methods'] = $this->model_account_entersale->getPaymentMethods();
 		
 		//$country = $this->model_localisation_country->getCountry($this->config->get('config_country_id'));
 		
@@ -234,6 +259,11 @@ class ControllerAccountEntersale extends Controller {
 			$data['donate_quantity'] = '';
 		}
 
+		if (isset($this->request->post['payment_method'])) {
+			$data['payment_method'] = $this->request->post['payment_method']; 		
+		} else {
+			$data['payment_method'] = '';
+		}
 
 		// if (isset($this->error['custom_field'])) {
 		// 	$data['error_custom_field'] = $this->error['custom_field'];
@@ -316,14 +346,94 @@ class ControllerAccountEntersale extends Controller {
 	protected function validate() {
 
 		// order_date
-
+		$order_date = date_create_from_format("m/d/Y", $this->request->post['order_date']);
+		$current_date = date_create();
+		$date_diff = date_diff($order_date, $current_date);
+		if ($date_diff->invert > 0) {
+			$this->error['order_date'] = $this->language->get('error_future_order_date');
+			$this->error['warning'] = $this->language->get('error_form');
+		}		
+		
+		if ((utf8_strlen(trim($this->request->post['payment_firstname'])) < 1) || (utf8_strlen(trim($this->request->post['payment_firstname'])) > 32)) {
+			$this->error['payment_firstname'] = $this->language->get('error_payment_firstname');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
 
 		if ((utf8_strlen(trim($this->request->post['payment_firstname'])) < 1) || (utf8_strlen(trim($this->request->post['payment_firstname'])) > 32)) {
 			$this->error['payment_firstname'] = $this->language->get('error_payment_firstname');
+			$this->error['warning'] = $this->language->get('error_form');
 		}
 
 		if ((utf8_strlen(trim($this->request->post['payment_lastname'])) < 1) || (utf8_strlen(trim($this->request->post['payment_lastname'])) > 32)) {
 			$this->error['payment_lastname'] = $this->language->get('error_payment_lastname');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ((utf8_strlen(trim($this->request->post['address_1'])) < 3) || (utf8_strlen(trim($this->request->post['address_1'])) > 128)) {
+			$this->error['address_1'] = $this->language->get('error_address_1');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ((utf8_strlen(trim($this->request->post['city'])) < 2) || (utf8_strlen(trim($this->request->post['city'])) > 128)) {
+			$this->error['city'] = $this->language->get('error_city');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ((utf8_strlen(trim($this->request->post['postcode'])) < 3) || (utf8_strlen(trim($this->request->post['postcode'])) > 10)) {
+			$this->error['postcode'] = $this->language->get('error_postcode');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ( !isset($this->request->post['country_id']) || (utf8_strlen(trim($this->request->post['country_id'])) < 1)) {
+			$this->error['country'] = $this->language->get('error_country');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ( !isset($this->request->post['zone_id']) || (utf8_strlen(trim($this->request->post['zone_id'])) < 1)) {
+			$this->error['zone'] = $this->language->get('error_zone');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		$wreath_quantity = 0;
+		if (isset($this->request->post['wreath_quantity']) && is_numeric($this->request->post['wreath_quantity'])) {
+			$wreath_quantity = intval($this->request->post['wreath_quantity']);
+		}
+
+		$swag_quantity = 0;
+		if (isset($this->request->post['swag_quantity']) && is_numeric($this->request->post['swag_quantity'])) {
+			$swag_quantity = intval($this->request->post['swag_quantity']);
+		}
+
+		$donate_quantity = 0;
+		if (isset($this->request->post['donate_quantity']) && is_numeric($this->request->post['donate_quantity'])) {
+			$donate_quantity = intval($this->request->post['donate_quantity']);
+		}
+
+		if ($wreath_quantity < 0) {
+			$this->error['wreath_quantity'] = $this->language->get('error_negative_quantity');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ($swag_quantity < 0) {
+			$this->error['swag_quantity'] = $this->language->get('error_negative_quantity');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ($donate_quantity < 0) {
+			$this->error['donate_quantity'] = $this->language->get('error_negative_quantity');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
+		if ( !isset($this->request->post['payment_method']) || utf8_strlen(trim($this->request->post['payment_method'])) < 1 ) {
+			$this->error['payment_method'] = $this->language->get('error_payment_method');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+	
+		if ($wreath_quantity == 0 && $swag_quantity == 0 && $donate_quantity == 0) {
+			$this->error['wreath_quantity'] = $this->language->get('error_missing_quantity');
+			$this->error['swag_quantity'] = $this->language->get('error_missing_quantity');
+			$this->error['donate_quantity'] = $this->language->get('error_missing_quantity');
+			$this->error['warning'] = $this->language->get('error_missing_quantity');
 		}
 
 		// if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {

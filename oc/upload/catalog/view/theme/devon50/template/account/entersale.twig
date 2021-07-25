@@ -25,14 +25,16 @@
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-oders-date">{{ entry_order_date }}</label>
             <div class="col-sm-2 input-group date" style="padding-left: 15px">
-              <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}"          data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" />
+              <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}" 
+                  data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" readonly />
               <span class="input-group-btn">
                 <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
               </span>
             </div>
               {% if error_order_date %}
-              <div class="text-danger">{{ error_order_date }}</div>
-              {% endif %}
+            <span class="col-sm-2"></span>
+            <div class="col-sm-4 text-danger">{{ error_order_date }}</div>
+              {% endif %}            
           </div>
 
           
@@ -72,7 +74,8 @@
               <input type="text" name="address_1" value="{{ address_1 }}" placeholder="{{ entry_address_1 }}" id="input-address-1" class="form-control" />
               {% if error_address_1 %}
               <div class="text-danger">{{ error_address_1 }}</div>
-              {% endif %} </div>
+              {% endif %} 
+            </div>
           </div>
 
           <div class="form-group">
@@ -88,7 +91,8 @@
               <input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" />
               {% if error_city %}
               <div class="text-danger">{{ error_city }}</div>
-              {% endif %} </div>
+              {% endif %} 
+            </div>
           </div>
           
           <div class="form-group required">
@@ -97,7 +101,8 @@
               <input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-postcode" class="form-control" />
               {% if error_postcode %}
               <div class="text-danger">{{ error_postcode }}</div>
-              {% endif %} </div>
+              {% endif %} 
+            </div>
           </div>
           
           <div class="form-group required">
@@ -121,7 +126,8 @@
               </select>
               {% if error_country %}
               <div class="text-danger">{{ error_country }}</div>
-              {% endif %} </div>
+              {% endif %} 
+            </div>
           </div>
           
           <div class="form-group required">
@@ -136,12 +142,12 @@
 
 
           <div class="form-group ">
-            <label class="col-sm-2 control-label" for="input-wreath"> Enter {{ wreath_name }} quantity </label>
+            <label class="col-sm-2 control-label" for="input-wreath-quantity"> Enter {{ wreath_name }} quantity </label>
             <div class="col-sm-4">
               <table>
                 <tr>
                   <td>
-                    <input type="number" name="wreath_quantity" value="{{ wreath_quantity }}" placeholder="0" id="input-wreath-quatity" class="form-control"  />
+                    <input type="number" name="wreath_quantity" value="{{ wreath_quantity }}" placeholder="0" id="input-wreath-quantity" class="form-control"  />
                   </td>
                   <td>
                     <span style="position: relative" class="form-control" >${{wreath_price}} </span>
@@ -155,12 +161,12 @@
           </div>
 
           <div class="form-group ">
-            <label class="col-sm-2 control-label" for="input-wreath"> Enter {{ swag_name }} quantity </label>
+            <label class="col-sm-2 control-label" for="input-swag-quantity"> Enter {{ swag_name }} quantity </label>
             <div class="col-sm-4">
               <table>
                 <tr>
                   <td>
-                    <input type="number" name="swag_quantity" value="{{ swag_quantity }}" placeholder="0" id="input-swag-quatity" class="form-control"  />
+                    <input type="number" name="swag_quantity" value="{{ swag_quantity }}" placeholder="0" id="input-swag-quantity" class="form-control"  />
                   </td>
                   <td>
                     <span style="position: relative" class="form-control" >${{swag_price}} </span>
@@ -174,12 +180,12 @@
           </div>
 
           <div class="form-group ">
-            <label class="col-sm-2 control-label" for="input-wreath"> Enter {{ donate_name }} quantity </label>
+            <label class="col-sm-2 control-label" for="input-donate-quantity"> Enter {{ donate_name }} quantity </label>
             <div class="col-sm-4">
               <table>
                 <tr>
                   <td>
-                    <input type="number" name="donate_quantity" value="{{ donate_quantity }}" placeholder="0" id="input-donate-quatity" class="form-control"  />
+                    <input type="number" name="donate_quantity" value="{{ donate_quantity }}" placeholder="0" id="input-donate-quantity" class="form-control"  />
                   </td>
                   <td>
                     <span style="position: relative" class="form-control" >${{donate_price}} </span>
@@ -194,11 +200,37 @@
 
 
           <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-payment-method">{{ entry_payment_method }} </label>
+            <div class="col-sm-4">
+              <select name="payment_method" id="input-payment-method" class="form-control">
+                <option value="">{{ text_select }}</option>
+                
+                {% for pm in payment_methods %}
+                  {% if pm.payment_method == payment_method %}
+                
+                <option value="{{ pm.payment_method }}" selected="selected">{{ pm.name }}</option>
+                
+                  {% else %}
+                
+                <option value="{{ pm.payment_method }}">{{ pm.name }}</option>
+                
+                  {% endif %}
+                {% endfor %}
+              
+              </select>
+              {% if error_payment_method %}
+              <div class="text-danger">{{ error_payment_method }}</div>
+              {% endif %} 
+            </div>
+          </div>
+
+
+          {# <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-company">{{ entry_all_correct }} </label>
             <div class="col-sm-4" style="padding-top: 7px">
               <input type="checkbox" name="all_correct" value="all_correct" />
             </div>
-          </div>
+          </div> #}
 
 
           {# <div class="form-group required">
@@ -373,7 +405,7 @@
           <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>
           <div class="pull-right">
             {# <input type="submit" value="{{ button_continue }}" class="btn btn-primary" disabled /> #}
-            <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+            <input type="submit" value="{{ button_save }}" class="btn btn-primary" />
           </div>
         </div>
       </form>
@@ -416,11 +448,11 @@ $('select[name=\'country_id\']').on('change', function() {
 			$('select[name=\'country_id\']').prop('disabled', false);
 		},
 		success: function(json) {
-			if (json['postcode_required'] == '1') {
-				$('input[name=\'postcode\']').parent().parent().addClass('required');
-			} else {
-				$('input[name=\'postcode\']').parent().parent().removeClass('required');
-			}
+			// if (json['postcode_required'] == '1') {
+			// 	$('input[name=\'postcode\']').parent().parent().addClass('required');
+			// } else {
+			// 	$('input[name=\'postcode\']').parent().parent().removeClass('required');
+			// }
 			
 			html = '<option value="">{{ text_select }}</option>';
 			

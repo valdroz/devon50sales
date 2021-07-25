@@ -180,4 +180,18 @@ class ModelAccountEntersale extends Model {
 	}
 
 
+	public function getPaymentMethods() {
+		return array(
+			array(
+				"payment_method" => "cod",
+				"name" => "Cash"
+			),
+			array(
+				"payment_method" => "cheque",
+				"name" => "Cheque"
+			)
+		);
+	}
+
+
 }
