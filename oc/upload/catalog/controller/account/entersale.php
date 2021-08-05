@@ -22,10 +22,48 @@ class ControllerAccountEntersale extends Controller {
 		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 
 		$this->load->model('account/entersale');
+		$this->load->model('account/customer');
+		$this->load->model('localisation/country');
 
+		$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
+
+		$affiliate_info = $this->model_account_customer->getAffiliate($this->customer->getId());
+
+		// if ($affiliate_info) {
+		// 	$order_data['affiliate_id'] = $affiliate_info['customer_id'];
+		// 	$order_data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
+		// } else {
+		// 	$order_data['affiliate_id'] = 0;
+		// 	$order_data['commission'] = 0;
+		// }
+
+		$data['affiliate_info'] = $affiliate_info;
+		$data['customer_info'] = $customer_info;
+
+		$data['countries'] = $this->model_localisation_country->getCountries();	
+		$data['payment_methods'] = $this->model_account_entersale->getPaymentMethods();
+		
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-			//$this->model_account_customer->editCustomer($this->customer->getId(), $this->request->post);
 
+			$data['store_id'] = $this->config->get('config_store_id');
+			$data['invoice_prefix'] = $this->config->get('config_invoice_prefix');
+			$data['store_id'] = $this->config->get('config_store_id');
+			$data['store_name'] = $this->config->get('config_name');
+			if ($data['store_id']) {
+				$data['store_url'] = $this->config->get('config_url');
+			} else {
+				$data['store_url'] = HTTP_SERVER;
+			}
+			$data['customer_id'] = 0;
+			$data['customer_group_id'] = $this->config->get('config_customer_group_id');
+			$data['payment_address_format'] = '';
+			if (isset($this->request->post['country'])) {
+				$data['country_name'] = $this->model_localisation_country->getCountry($this->request->post['country'])['name']; 
+			} else {
+				$data['country'] = '';
+			}
+		
+			$this->model_account_entersale->addOrder($data, $this->request->post);
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$this->response->redirect($this->url->link('account/account', '', true));
@@ -161,13 +199,6 @@ class ControllerAccountEntersale extends Controller {
 		$data['donate_name'] = $donate_info['name'];
 		$data['donate_price'] = $donate_info['price'];
 
-
-		$this->load->model('localisation/country');
-
-		$data['countries'] = $this->model_localisation_country->getCountries();	
-		$data['payment_methods'] = $this->model_account_entersale->getPaymentMethods();
-		
-		//$country = $this->model_localisation_country->getCountry($this->config->get('config_country_id'));
 		
 		if (isset($this->request->post['order_date'])) {
 			$data['order_date'] = $this->request->post['order_date'];
@@ -349,6 +380,7 @@ class ControllerAccountEntersale extends Controller {
 		$order_date = date_create_from_format("m/d/Y", $this->request->post['order_date']);
 		$current_date = date_create();
 		$date_diff = date_diff($order_date, $current_date);
+
 		if ($date_diff->invert > 0) {
 			$this->error['order_date'] = $this->language->get('error_future_order_date');
 			$this->error['warning'] = $this->language->get('error_form');
@@ -435,6 +467,8 @@ class ControllerAccountEntersale extends Controller {
 			$this->error['donate_quantity'] = $this->language->get('error_missing_quantity');
 			$this->error['warning'] = $this->language->get('error_missing_quantity');
 		}
+
+
 
 		// if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
 		// 	$this->error['email'] = $this->language->get('error_email');
