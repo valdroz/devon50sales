@@ -29,14 +29,20 @@
               <td class="text-right"><b>{{ column_quantity }}</b></td>
               <td class="text-right"><b>{{ column_total }}</b></td>
               <td class="text-right"><b>{{ column_payment_method }}</b></td>
-              <td class="text-left"><b>{{ column_sh_first_name }}</b></td>
-              <td class="text-left"><b>{{ column_sh_last_name }}</b></td>
-              <td class="text-left"><b>{{ column_sh_company_name }}</b></td>
+              {# <td class="text-left"><b>{{ column_sh_first_name }}</b></td>
+              <td class="text-left"><b>{{ column_sh_last_name }}</b></td> #}
+              {# <td class="text-left"><b>{{ column_sh_last_name }}, {{ column_sh_first_name }}</b></td> #}
+              <td class="text-left"><b>{{ column_sh_address }}</b></td>
+              <td class="text-left"><b>{{ column_contact }}</b></td>
+              {# <td class="text-left"><b>{{ column_sh_company_name }}</b></td>
               <td class="text-left"><b>{{ column_sh_addr_line_1 }}</b></td>
               <td class="text-left"><b>{{ column_sh_addr_line_2 }}</b></td>
               <td class="text-left"><b>{{ column_sh_city }}</b></td>
               <td class="text-left"><b>{{ column_sh_postcode }}</b></td>
               <td class="text-left"><b>{{ column_sh_country }}</b></td>
+              <td class="text-left"><b>{{ column_email }}</b></td>
+              <td class="text-left"><b>{{ column_telephone }}</b></td> #}
+              <td class="text-left"><b>{{ column_comment }}</b></td>
             </tr>
             
           </thead>
@@ -52,14 +58,36 @@
             <td class="text-right">{{ transaction.quantity }}</td>
             <td class="text-right">{{ transaction.total }}</td>
             <td class="text-right">{{ transaction.payment_method }}</td>
-            <td class="text-left">{{ transaction.sh_first_name }}</td>
-            <td class="text-left">{{ transaction.sh_last_name }}</td>
-            <td class="text-left">{{ transaction.sh_company_name }}</td>
+            {# <td class="text-left">{{ transaction.sh_last_name }}, {{ transaction.sh_first_name }}</td> #}
+            {# <td class="text-left">{{ transaction.sh_first_name }}</td>
+            <td class="text-left">{{ transaction.sh_last_name }}</td> #}
+
+            <td class="text-left">
+                        {{ transaction.sh_last_name }}, {{ transaction.sh_first_name }}<br>
+                        {% if transaction.sh_company_name %}
+                        {{ transaction.sh_company_name }}<br>
+                        {% endif %}
+                        {{ transaction.sh_addr_line_1 }}<br>
+                        {% if transaction.sh_addr_line_2 %}
+                        {{ transaction.sh_addr_line_2 }}<br>
+                        {% endif %}
+                        {{ transaction.sh_city }}, {{ transaction.sh_zone }} {{ transaction.sh_postcode }}<br>
+                        {{ transaction.sh_country }}
+                        </td>
+
+            <td class="text-left">
+                Email: {{ transaction.email }}<br>
+                Phone: {{ transaction.telephone }}
+              </td>
+            {# <td class="text-left">{{ transaction.sh_company_name }}</td>
             <td class="text-left">{{ transaction.sh_addr_line_1 }}</td>
             <td class="text-left">{{ transaction.sh_addr_line_2 }}</td>
             <td class="text-left">{{ transaction.sh_city }}</td>
             <td class="text-left">{{ transaction.sh_postcode }}</td>
             <td class="text-left">{{ transaction.sh_country }}</td>
+            <td class="text-left">{{ transaction.email }}</td>
+            <td class="text-left">{{ transaction.telephone }}</td> #}
+            <td class="text-left">{{ transaction.comment }}</td>
           </tr>
           {% endfor %}
           {% else %}

@@ -37,6 +37,21 @@ class ControllerAccountEntersale extends Controller {
 		// 	$order_data['commission'] = 0;
 		// }
 
+		$wreath_info = $this->model_account_entersale->getProductInfo(50);
+
+		$data['wreath_name'] = $wreath_info['name'];
+		$data['wreath_price'] = $wreath_info['price'];
+
+		$swag_info = $this->model_account_entersale->getProductInfo(51);
+
+		$data['swag_name'] = $swag_info['name'];
+		$data['swag_price'] = $swag_info['price'];
+
+		$donate_info = $this->model_account_entersale->getProductInfo(53);
+
+		$data['donate_name'] = $donate_info['name'];
+		$data['donate_price'] = $donate_info['price'];		
+
 		$data['affiliate_info'] = $affiliate_info;
 		$data['customer_info'] = $customer_info;
 
@@ -56,14 +71,136 @@ class ControllerAccountEntersale extends Controller {
 			}
 			$data['customer_id'] = 0;
 			$data['customer_group_id'] = $this->config->get('config_customer_group_id');
+	
+			$country_name = $this->model_localisation_country->getCountry($this->request->post['country_id'])['name']; 
+
+			$payment_method = $this->model_account_entersale->getPaymentMethod($this->request->post['payment_method']);
+
+			$data['firstname'] = $this->request->post['payment_firstname'];
+			$data['lastname'] = $this->request->post['payment_lastname'];
+			$data['email'] = isset($this->request->post['email']) ? $this->request->post['email'] : '';
+			$data['telephone'] = isset($this->request->post['telephone']) ? $this->request->post['telephone'] : '';
+			$data['payment_firstname'] = $this->request->post['payment_firstname'];
+			$data['payment_lastname'] = $this->request->post['payment_lastname']; 
+			$data['payment_company'] = isset($this->request->post['payment_company']) ? $this->request->post['payment_company'] : '';
+			$data['payment_address_1'] = $this->request->post['address_1'];
+			$data['payment_address_2'] = $this->request->post['address_2'];
+			$data['payment_city'] = $this->request->post['city'];
+			$data['payment_postcode'] = $this->request->post['postcode'];
+			$data['payment_country'] = $country_name; 
+			$data['payment_country_id'] = $this->request->post['country_id'];
+			$data['payment_zone'] = ''; 
+			$data['payment_zone_id'] = $this->request->post['zone_id'];
 			$data['payment_address_format'] = '';
-			if (isset($this->request->post['country'])) {
-				$data['country_name'] = $this->model_localisation_country->getCountry($this->request->post['country'])['name']; 
+			$data['payment_method'] = $payment_method;
+			$data['payment_code'] = $this->request->post['payment_method'];
+
+			$data['shipping_firstname'] = $this->request->post['payment_firstname'];
+			$data['shipping_lastname'] = $this->request->post['payment_lastname'];
+			$data['shipping_company']  = isset($this->request->post['payment_company']) ? $this->request->post['payment_company'] : '';
+			$data['shipping_address_1'] = $this->request->post['address_1'];
+			$data['shipping_address_2'] = $this->request->post['address_2'];
+			$data['shipping_city'] = $this->request->post['city'];
+			$data['shipping_postcode'] = $this->request->post['postcode'];
+			$data['shipping_country'] = $country_name;  
+			$data['shipping_country_id']  = $this->request->post['country_id'];
+			$data['shipping_zone'] = '';
+			$data['shipping_zone_id'] = $this->request->post['zone_id']; 
+			$data['shipping_address_format'] = '';
+			$data['shipping_method'] = 'Free Shipping';
+			$data['shipping_code'] = 'free.free';		
+
+			$data['comment'] = 'Entered by scout';
+			$wreath_quantity = intval($this->request->post['wreath_quantity']);
+			$swag_quantity = intval($this->request->post['swag_quantity']);
+			$donate_quantity = intval($this->request->post['donate_quantity']);
+			
+			$total = 
+				$wreath_quantity * $wreath_info['price'] + 
+				$swag_quantity * $swag_info['price'] + 
+				$donate_quantity * $data['donate_price'];
+
+			if ($affiliate_info) {
+				$data['affiliate_id'] = $affiliate_info['customer_id'];
+				$data['commission'] = ($total / 100) * $affiliate_info['commission'];
 			} else {
-				$data['country'] = '';
+				$data['affiliate_id'] = 0;
+				$data['commission'] = 0;
 			}
-		
-			$this->model_account_entersale->addOrder($data, $this->request->post);
+
+			$data['total'] = $total;
+			$data['affiliate_id'] = $this->customer->getId();
+			$data['commission'] = 0.0;
+			$data['marketing_id'] = 0;
+			$data['tracking'] = $affiliate_info['tracking'];
+			$data['language_id'] = 1;
+			$data['currency_id'] = 2;
+			$data['currency_code'] = 'USD';
+			$data['currency_value'] = 1.0;
+			$data['ip'] = $this->request->server['REMOTE_ADDR'];
+
+			if (!empty($this->request->server['HTTP_X_FORWARDED_FOR'])) {
+				$data['forwarded_ip'] = $this->request->server['HTTP_X_FORWARDED_FOR'];
+			} elseif (!empty($this->request->server['HTTP_CLIENT_IP'])) {
+				$data['forwarded_ip'] = $this->request->server['HTTP_CLIENT_IP'];
+			} else {
+				$data['forwarded_ip'] = '';
+			}
+
+			if (isset($this->request->server['HTTP_USER_AGENT'])) {
+				$data['user_agent'] = $this->request->server['HTTP_USER_AGENT'];
+			} else {
+				$data['user_agent'] = '';
+			}
+
+			if (isset($this->request->server['HTTP_ACCEPT_LANGUAGE'])) {
+				$data['accept_language'] = $this->request->server['HTTP_ACCEPT_LANGUAGE'];
+			} else {
+				$data['accept_language'] = '';
+			}
+			
+			$data['products'] = array();
+			if ($wreath_quantity > 0) {
+				$data['products'][] = array(
+					'product_id' => $wreath_info['product_id'],
+					'name' => $wreath_info['name'],
+					'model' => $wreath_info['name'],
+					'quantity' => $wreath_quantity,
+					'price' => $wreath_info['price'],
+					'total' => $wreath_quantity * $wreath_info['price'],
+					'tax' => 0.0,
+					'reward' => 0
+				);
+			}
+
+			if ($swag_quantity > 0) {
+				$data['products'][] = array(
+					'product_id' => $swag_info['product_id'],
+					'name' => $swag_info['name'],
+					'model' => $swag_info['name'],
+					'quantity' => $swag_quantity,
+					'price' => $swag_info['price'],
+					'total' => $swag_quantity * $swag_info['price'],
+					'tax' => 0.0,
+					'reward' => 0
+				);
+			}
+
+			if ($donate_quantity > 0) {
+				$data['products'][] = array(
+					'product_id' => $donate_info['product_id'],
+					'name' => $donate_info['name'],
+					'model' => $donate_info['name'],
+					'quantity' => $donate_quantity,
+					'price' => $donate_info['price'],
+					'total' => $donate_quantity * $donate_info['price'],
+					'tax' => 0.0,
+					'reward' => 0
+				);
+			}
+
+
+			$this->model_account_entersale->addOrder($data);
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$this->response->redirect($this->url->link('account/account', '', true));
@@ -184,20 +321,7 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_payment_method'] = '';
 		}
 
-		$wreath_info = $this->model_account_entersale->getProductInfo(50);
 
-		$data['wreath_name'] = $wreath_info['name'];
-		$data['wreath_price'] = $wreath_info['price'];
-
-		$swag_info = $this->model_account_entersale->getProductInfo(51);
-
-		$data['swag_name'] = $swag_info['name'];
-		$data['swag_price'] = $swag_info['price'];
-
-		$donate_info = $this->model_account_entersale->getProductInfo(53);
-
-		$data['donate_name'] = $donate_info['name'];
-		$data['donate_price'] = $donate_info['price'];
 
 		
 		if (isset($this->request->post['order_date'])) {
