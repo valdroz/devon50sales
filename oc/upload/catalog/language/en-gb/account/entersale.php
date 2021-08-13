@@ -6,6 +6,7 @@ $_['heading_title']      = 'Enter your check or cash sale';
 $_['text_account']       = 'Account';
 $_['text_entersale']        = 'Enter sale';
 $_['text_success']  = 'Order is saved.';
+$_['text_subheading'] = 'Enter only cache or check sales. Do not enter credit card sales.';
 $_['entry_order_date']      = 'The date sale was made';
 $_['entry_payment_company']      = 'Company name if applicable';
 $_['entry_payment_firstname']    = 'Buyer\'s First Name';

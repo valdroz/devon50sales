@@ -20,7 +20,7 @@
       <h1>{{ heading_title }}</h1>
       <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
         <fieldset>
-          {# <legend>{{ text_your_details }}</legend> #}
+          <legend>{{ text_subheading }}</legend>
 
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-oders-date">{{ entry_order_date }}</label>
@@ -54,6 +54,26 @@
               <input type="text" name="payment_lastname" value="{{ payment_lastname }}" placeholder="{{ entry_payment_lastname }}" id="input-payment-lastname" class="form-control" />
               {% if error_payment_lastname %}
               <div class="text-danger">{{ error_payment_lastname }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-telephone">{{ entry_telephone }} </label>
+            <div class="col-sm-4">
+              <input type="tel" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+              {% if error_telephone %}
+              <div class="text-danger">{{ error_telephone }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-email">{{ entry_email }} </label>
+            <div class="col-sm-4">
+              <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+              {% if error_email %}
+              <div class="text-danger">{{ error_email }}</div>
               {% endif %}
             </div>
           </div>

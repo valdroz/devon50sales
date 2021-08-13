@@ -449,21 +449,21 @@ class ControllerAccountEntersale extends Controller {
 		// 	$data['lastname'] = '';
 		// }
 
-		// if (isset($this->request->post['email'])) {
-		// 	$data['email'] = $this->request->post['email'];
+		if (isset($this->request->post['email'])) {
+			$data['email'] = $this->request->post['email'];
 		// } elseif (!empty($customer_info)) {
 		// 	$data['email'] = $customer_info['email'];
-		// } else {
-		// 	$data['email'] = '';
-		// }
+		} else {
+			$data['email'] = '';
+		}
 
-		// if (isset($this->request->post['telephone'])) {
-		// 	$data['telephone'] = $this->request->post['telephone'];
+		if (isset($this->request->post['telephone'])) {
+			$data['telephone'] = $this->request->post['telephone'];
 		// } elseif (!empty($customer_info)) {
 		// 	$data['telephone'] = $customer_info['telephone'];
-		// } else {
-		// 	$data['telephone'] = '';
-		// }
+		} else {
+			$data['telephone'] = '';
+		}
 
 		// Custom Fields
 		$data['custom_fields'] = array();
