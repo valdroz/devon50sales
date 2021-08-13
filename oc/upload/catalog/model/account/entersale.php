@@ -309,7 +309,7 @@ class ModelAccountEntersale extends Model {
 			case 'cod':
 				return 'Cash';
 				
-			case 'cchequeod':
+			case 'cheque':
 				return 'Cheque';
 				
 		}

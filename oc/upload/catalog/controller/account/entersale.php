@@ -24,18 +24,12 @@ class ControllerAccountEntersale extends Controller {
 		$this->load->model('account/entersale');
 		$this->load->model('account/customer');
 		$this->load->model('localisation/country');
+		$this->load->model('localisation/zone');
+
 
 		$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
 
 		$affiliate_info = $this->model_account_customer->getAffiliate($this->customer->getId());
-
-		// if ($affiliate_info) {
-		// 	$order_data['affiliate_id'] = $affiliate_info['customer_id'];
-		// 	$order_data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
-		// } else {
-		// 	$order_data['affiliate_id'] = 0;
-		// 	$order_data['commission'] = 0;
-		// }
 
 		$wreath_info = $this->model_account_entersale->getProductInfo(50);
 
@@ -59,7 +53,7 @@ class ControllerAccountEntersale extends Controller {
 		$data['payment_methods'] = $this->model_account_entersale->getPaymentMethods();
 		
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-
+		
 			$data['store_id'] = $this->config->get('config_store_id');
 			$data['invoice_prefix'] = $this->config->get('config_invoice_prefix');
 			$data['store_id'] = $this->config->get('config_store_id');
@@ -76,6 +70,8 @@ class ControllerAccountEntersale extends Controller {
 
 			$payment_method = $this->model_account_entersale->getPaymentMethod($this->request->post['payment_method']);
 
+			$zone = $this->model_localisation_zone->getZone($this->request->post['zone_id']);
+
 			$data['firstname'] = $this->request->post['payment_firstname'];
 			$data['lastname'] = $this->request->post['payment_lastname'];
 			$data['email'] = isset($this->request->post['email']) ? $this->request->post['email'] : '';
@@ -89,7 +85,7 @@ class ControllerAccountEntersale extends Controller {
 			$data['payment_postcode'] = $this->request->post['postcode'];
 			$data['payment_country'] = $country_name; 
 			$data['payment_country_id'] = $this->request->post['country_id'];
-			$data['payment_zone'] = ''; 
+			$data['payment_zone'] = $zone['code']; 
 			$data['payment_zone_id'] = $this->request->post['zone_id'];
 			$data['payment_address_format'] = '';
 			$data['payment_method'] = $payment_method;
@@ -104,7 +100,7 @@ class ControllerAccountEntersale extends Controller {
 			$data['shipping_postcode'] = $this->request->post['postcode'];
 			$data['shipping_country'] = $country_name;  
 			$data['shipping_country_id']  = $this->request->post['country_id'];
-			$data['shipping_zone'] = '';
+			$data['shipping_zone'] = $zone['code'];
 			$data['shipping_zone_id'] = $this->request->post['zone_id']; 
 			$data['shipping_address_format'] = '';
 			$data['shipping_method'] = 'Free Shipping';
@@ -120,13 +116,13 @@ class ControllerAccountEntersale extends Controller {
 				$swag_quantity * $swag_info['price'] + 
 				$donate_quantity * $data['donate_price'];
 
-			if ($affiliate_info) {
+			//if ($affiliate_info) {
 				$data['affiliate_id'] = $affiliate_info['customer_id'];
 				$data['commission'] = ($total / 100) * $affiliate_info['commission'];
-			} else {
-				$data['affiliate_id'] = 0;
-				$data['commission'] = 0;
-			}
+			// } else {
+			// 	$data['affiliate_id'] = 0;
+			// 	$data['commission'] = 0;
+			// }
 
 			$data['total'] = $total;
 			$data['affiliate_id'] = $this->customer->getId();

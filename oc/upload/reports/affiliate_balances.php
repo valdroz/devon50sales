@@ -77,7 +77,9 @@ GROUP BY
 ");
 
 
-if($_GET["pw"]==PASSWORD){
+$password = isset($_GET["pw"]) ? $_GET["pw"] : $_SERVER['HTTP_PW'];
+
+if ($password == PASSWORD) {
 
         //Connect to the database and fetch the data
         $link = mysqli_connect(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE) or die("DB: Couldn't make connection. Please check the database configurations.");
@@ -123,8 +125,7 @@ if($_GET["pw"]==PASSWORD){
 }
 //Message to display in case of wrong access password
 else {
-        $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
-        echo "Invalid password! Remember to write the URL properly and include your password:<BR>".(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]".$uri_parts[0]."?pw=your_password";
+  echo "Nope";
 }
 ?>
 
