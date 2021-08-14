@@ -30,54 +30,55 @@ order by cust_g.name, cust.firstname, cust.lastname
 ");
 
 
-if($_GET["pw"]==PASSWORD){
+$password = isset($_GET["pw"]) ? $_GET["pw"] : $_SERVER['HTTP_PW'];
 
-        //Connect to the database and fetch the data
-        $link = mysqli_connect(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE) or die("DB: Couldn't make connection. Please check the database configurations.");
-        $setSql = SQL;
-        $setRec = mysqli_query($link, $setSql);
+if ($password == PASSWORD) {
 
-        //Fetch the column names
-        $columns = mysqli_fetch_fields($setRec);
-        foreach($columns as $column){
-                $setMainHeader .= $column->name.", ";
-        }
+  //Connect to the database and fetch the data
+  $link = mysqli_connect(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE) or die("DB: Couldn't make connection. Please check the database configurations.");
+  $setSql = SQL;
+  $setRec = mysqli_query($link, $setSql);
 
-        while($rec = mysqli_fetch_row($setRec))  {
-          $rowLine = '';
-          foreach ($rec as $value) {
-                if(!isset($value) || $value == "") {
-                  $value = ", ";
-                } else {
-                  //Escape all the special characters
-                  $value = strip_tags(str_replace('"', '""', $value));
-                  $value = ''.$value . '' . ", ";
-                }
-                $rowLine .= $value;
-          }
-          $setData .= trim($rowLine)."\n";
-        }
+  //Fetch the column names
+  $columns = mysqli_fetch_fields($setRec);
+  foreach($columns as $column){
+    $setMainHeader .= $column->name.", ";
+  }
 
-        $setData = str_replace("\r", "", $setData);
+  while($rec = mysqli_fetch_row($setRec))  {
+    $rowLine = '';
+    foreach ($rec as $value) {
+      if(!isset($value) || $value == "") {
+        $value = ", ";
+      } else {
+        //Escape all the special characters
+        $value = strip_tags(str_replace('"', '""', $value));
+        $value = '"' . $value . '"' . ", ";
+      }
+      $rowLine .= $value;
+    }
+    $setData .= trim($rowLine)."\n";
+  }
 
-        if ($setData == "") {
-          $setData = "No matching records found";
-        }
+  $setData = str_replace("\r", "", $setData);
 
-        //Download headers
-        //header("Content-type: application/octet-stream");
-        header("Content-type: text/csv");
-        header("Content-Disposition: attachment; filename=".FILENAME."-".date("Y_m_d-Hi_s").".csv");
-        header("Pragma: no-cache");
-        header("Expires: 0");
+  if ($setData == "") {
+    $setData = "No matching records found";
+  }
 
-        //Print the table rows as an Excel row with the column name as a header
-        echo ucwords($setMainHeader)."\n".$setData."\n";
+  //Download headers
+  //header("Content-type: application/octet-stream");
+  header("Content-type: text/csv");
+  header("Content-Disposition: attachment; filename=".FILENAME."-".date("Y_m_d-Hi_s").".csv");
+  header("Pragma: no-cache");
+  header("Expires: 0");
+
+  //Print the table rows as an Excel row with the column name as a header
+  echo ucwords($setMainHeader)."\n".$setData."\n";
 }
 //Message to display in case of wrong access password
 else {
-        $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
-        echo "Invalid password! Remember to write the URL properly and include your password:<BR>".(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]".$uri_parts[0]."?pw=your_password";
+  echo "Nope";
 }
 ?>
 

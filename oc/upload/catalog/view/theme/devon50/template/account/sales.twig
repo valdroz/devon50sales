@@ -21,22 +21,19 @@
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
           <thead>
-            <tr>
-              <td class="text-left">{{ column_order_date }}</td>
-              <td class="text-left">{{ column_order_id }}</td>
-              <td class="text-left">{{ column_product_name }}</td>
-              <td class="text-right">{{ column_product_price }}</td>
-              <td class="text-right">{{ column_quantity }}</td>
-              <td class="text-right">{{ column_total }}</td>
-              <td class="text-left">{{ column_sh_first_name }}</td>
-              <td class="text-left">{{ column_sh_last_name }}</td>
-              <td class="text-left">{{ column_sh_company_name }}</td>
-              <td class="text-left">{{ column_sh_addr_line_1 }}</td>
-              <td class="text-left">{{ column_sh_addr_line_2 }}</td>
-              <td class="text-left">{{ column_sh_city }}</td>
-              <td class="text-left">{{ column_sh_postcode }}</td>
-              <td class="text-left">{{ column_sh_country }}</td>
+            <tr>              
+              <td class="text-left"><b>{{ column_order_date }}</b></td>
+              <td class="text-left"><b>{{ column_order_id }}</b></td>
+              <td class="text-left"><b>{{ column_product_name }}</b></td>
+              <td class="text-right"><b>{{ column_product_price }}</b></td>
+              <td class="text-right"><b>{{ column_quantity }}</b></td>
+              <td class="text-right"><b>{{ column_total }}</b></td>
+              <td class="text-right"><b>{{ column_payment_method }}</b></td>
+              <td class="text-left"><b>{{ column_sh_address }}</b></td>
+              <td class="text-left"><b>{{ column_contact }}</b></td>
+              <td class="text-left"><b>{{ column_comment }}</b></td>
             </tr>
+            
           </thead>
           <tbody>
           
@@ -49,14 +46,26 @@
             <td class="text-right">{{ transaction.product_price }}</td>
             <td class="text-right">{{ transaction.quantity }}</td>
             <td class="text-right">{{ transaction.total }}</td>
-            <td class="text-left">{{ transaction.sh_first_name }}</td>
-            <td class="text-left">{{ transaction.sh_last_name }}</td>
-            <td class="text-left">{{ transaction.sh_company_name }}</td>
-            <td class="text-left">{{ transaction.sh_addr_line_1 }}</td>
-            <td class="text-left">{{ transaction.sh_addr_line_2 }}</td>
-            <td class="text-left">{{ transaction.sh_city }}</td>
-            <td class="text-left">{{ transaction.sh_postcode }}</td>
-            <td class="text-left">{{ transaction.sh_country }}</td>
+            <td class="text-right">{{ transaction.payment_method }}</td>
+
+            <td class="text-left">
+                {{ transaction.sh_last_name }}, {{ transaction.sh_first_name }}<br>
+                {% if transaction.sh_company_name %}
+                {{ transaction.sh_company_name }}<br>
+                {% endif %}
+                {{ transaction.sh_addr_line_1 }}<br>
+                {% if transaction.sh_addr_line_2 %}
+                {{ transaction.sh_addr_line_2 }}<br>
+                {% endif %}
+                {{ transaction.sh_city }}, {{ transaction.sh_zone }} {{ transaction.sh_postcode }}<br>
+                {{ transaction.sh_country }}
+            </td>
+
+            <td class="text-left">
+                Email: {{ transaction.email }}<br>
+                Phone: {{ transaction.telephone }}
+              </td>
+            <td class="text-left">{{ transaction.comment }}</td>
           </tr>
           {% endfor %}
           {% else %}
@@ -73,7 +82,7 @@
         <div class="col-sm-6 text-right">{{ results }}</div>
       </div>
       <div class="buttons clearfix">
-        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_back }}</a></div>
       </div>
       {{ content_bottom }}
     </div>

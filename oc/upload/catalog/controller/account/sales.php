@@ -67,8 +67,13 @@ class ControllerAccountSales extends Controller {
 				'sh_addr_line_1' => $result['sh_addr_line_1'],
 				'sh_addr_line_2' => $result['sh_addr_line_2'],
 				'sh_city' => $result['sh_city'],
+				'sh_zone' => $result['sh_zone'],
 				'sh_postcode' => $result['sh_postcode'],
-				'sh_country' => $result['sh_country']
+				'sh_country' => $result['sh_country'],
+				'email' => $result['email'],
+				'telephone' => $result['telephone'],
+				'comment' => $result['comment'],
+				'payment_method' => strlen($result['payment_method']) > 22 ? substr($result['payment_method'], 0, 22) . '...' : $result['payment_method']
 			);
 		}
 

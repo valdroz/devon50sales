@@ -88,7 +88,9 @@ ORDER BY oc_order.order_id, oc_order_product.product_id ASC
 ");
 
 
-if($_GET["pw"]==PASSWORD){
+$password = isset($_GET["pw"]) ? $_GET["pw"] : $_SERVER['HTTP_PW'];
+
+if ($password == PASSWORD) {
 
         //Connect to the database and fetch the data
         $link = mysqli_connect(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE) or die("DB: Couldn't make connection. Please check the database configurations.");
