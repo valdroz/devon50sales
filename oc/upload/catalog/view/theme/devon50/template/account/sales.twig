@@ -18,64 +18,94 @@
     {% set class = 'col-sm-12' %}
     <div id="content" class="{{ class }}">{{ content_top }}
       <h1>{{ heading_title }}</h1>
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>              
-              <td class="text-left"><b>{{ column_order_date }}</b></td>
-              <td class="text-left"><b>{{ column_order_id }}</b></td>
-              <td class="text-left"><b>{{ column_product_name }}</b></td>
-              <td class="text-right"><b>{{ column_product_price }}</b></td>
-              <td class="text-right"><b>{{ column_quantity }}</b></td>
-              <td class="text-right"><b>{{ column_total }}</b></td>
-              <td class="text-right"><b>{{ column_payment_method }}</b></td>
-              <td class="text-left"><b>{{ column_sh_address }}</b></td>
-              <td class="text-left"><b>{{ column_contact }}</b></td>
-              <td class="text-left"><b>{{ column_comment }}</b></td>
-            </tr>
+
+        <div class="row">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-orders-year">{{ text_orders_year }}</label>
+            <div class="col-sm-4">
+              <select name="orders_year" id="input-orders-year" class="form-control" oninput="onYearSelected()">
+                
+                {% for year_choice in orders_year_choices %}
+                  {% if year_choice == orders_year %}
+                
+                <option value="{{ year_choice }}" selected="selected">{{ year_choice }}</option>
+                
+                  {% else %}
+                
+                <option value="{{ year_choice }}">{{ year_choice }}</option>
+                
+                  {% endif %}
+                {% endfor %}
+              
+              </select>
+            </div>
+          </div>
+        </div>
+
+      <div class="row">
+        <br>
+      </div>
+        
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>              
+                <td class="text-left"><b>{{ column_order_date }}</b></td>
+                <td class="text-left"><b>{{ column_order_id }}</b></td>
+                <td class="text-left"><b>{{ column_product_name }}</b></td>
+                <td class="text-right"><b>{{ column_product_price }}</b></td>
+                <td class="text-right"><b>{{ column_quantity }}</b></td>
+                <td class="text-right"><b>{{ column_total }}</b></td>
+                <td class="text-right"><b>{{ column_payment_method }}</b></td>
+                <td class="text-left"><b>{{ column_sh_address }}</b></td>
+                <td class="text-left"><b>{{ column_contact }}</b></td>
+                <td class="text-left"><b>{{ column_comment }}</b></td>
+              </tr>
+              
+            </thead>
+            <tbody>
             
-          </thead>
-          <tbody>
-          
-          {% if transactions %}
-          {% for transaction in transactions %}
-          <tr>
-            <td class="text-left">{{ transaction.order_date }}</td>
-            <td class="text-left">{{ transaction.order_id }}</td>
-            <td class="text-left">{{ transaction.product_name }}</td>
-            <td class="text-right">{{ transaction.product_price }}</td>
-            <td class="text-right">{{ transaction.quantity }}</td>
-            <td class="text-right">{{ transaction.total }}</td>
-            <td class="text-right">{{ transaction.payment_method }}</td>
+            {% if transactions %}
+            {% for transaction in transactions %}
+            <tr>
+              <td class="text-left">{{ transaction.order_date }}</td>
+              <td class="text-left">{{ transaction.order_id }}</td>
+              <td class="text-left">{{ transaction.product_name }}</td>
+              <td class="text-right">{{ transaction.product_price }}</td>
+              <td class="text-right">{{ transaction.quantity }}</td>
+              <td class="text-right">{{ transaction.total }}</td>
+              <td class="text-right">{{ transaction.payment_method }}</td>
 
-            <td class="text-left">
-                {{ transaction.sh_last_name }}, {{ transaction.sh_first_name }}<br>
-                {% if transaction.sh_company_name %}
-                {{ transaction.sh_company_name }}<br>
-                {% endif %}
-                {{ transaction.sh_addr_line_1 }}<br>
-                {% if transaction.sh_addr_line_2 %}
-                {{ transaction.sh_addr_line_2 }}<br>
-                {% endif %}
-                {{ transaction.sh_city }}, {{ transaction.sh_zone }} {{ transaction.sh_postcode }}<br>
-                {{ transaction.sh_country }}
-            </td>
-
-            <td class="text-left">
-                Email: {{ transaction.email }}<br>
-                Phone: {{ transaction.telephone }}
+              <td class="text-left">
+                  {{ transaction.sh_last_name }}, {{ transaction.sh_first_name }}<br>
+                  {% if transaction.sh_company_name %}
+                  {{ transaction.sh_company_name }}<br>
+                  {% endif %}
+                  {{ transaction.sh_addr_line_1 }}<br>
+                  {% if transaction.sh_addr_line_2 %}
+                  {{ transaction.sh_addr_line_2 }}<br>
+                  {% endif %}
+                  {{ transaction.sh_city }}, {{ transaction.sh_zone }} {{ transaction.sh_postcode }}<br>
+                  {{ transaction.sh_country }}
               </td>
-            <td class="text-left">{{ transaction.comment }}</td>
-          </tr>
-          {% endfor %}
-          {% else %}
-          <tr>
-            <td class="text-center" colspan="5">{{ text_empty }}</td>
-          </tr>
-          {% endif %}
-            </tbody>
-          
-        </table>
+
+              <td class="text-left">
+                  Email: {{ transaction.email }}<br>
+                  Phone: {{ transaction.telephone }}
+                </td>
+              <td class="text-left">{{ transaction.comment }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="5">{{ text_empty }}</td>
+            </tr>
+            {% endif %}
+              </tbody>
+            
+          </table>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-6 text-left">{{ pagination }}</div>
@@ -91,4 +121,14 @@
 -->    
   </div>
 </div>
+
+
+<script type="text/javascript"><!--
+function onYearSelected() {
+  var selectedYear = document.getElementById("input-orders-year").value;
+
+  window.location.replace("{{ this_page_url }}&year=" + selectedYear);
+}
+//--></script>
+
 {{ footer }}

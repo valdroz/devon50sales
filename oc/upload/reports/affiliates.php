@@ -20,13 +20,21 @@ SELECT af.customer_id as 'Scout ID',
  cust.firstname as 'First Name',
  cust.lastname as 'Last Name',
  cust.email as 'Email',
- cust_g.name as 'Group',
+ p.name AS 'Patrol name',
  af.tracking as 'Tracking Code',
- af.commission as 'Commission %',
- af.status as 'Status (1-Enabled; 0-Disabled)'
-FROM oc_customer_affiliate as af, oc_customer as cust, oc_customer_group_description as cust_g
-WHERE af.customer_id = cust.customer_id and cust.customer_group_id = cust_g.customer_group_id 
-order by cust_g.name, cust.firstname, cust.lastname
+ CASE af.status WHEN 1 THEN 'Approved' WHEN 0 THEN 'Not yet approved' END AS 'Status'
+FROM 
+	oc_customer_affiliate as af, 
+    oc_customer as cust, 
+    oc_customer_group_description as cust_g,
+    ocdevon.oc_custom_field_value_description p 
+WHERE 
+	af.customer_id = cust.customer_id 
+    and cust.customer_group_id = cust_g.customer_group_id 
+    and cust.customer_group_id = 2
+    and p.custom_field_id = 2 
+    and p.custom_field_value_id = JSON_UNQUOTE(JSON_EXTRACT(cust.custom_field, '$.\"2\"' ))     
+ORDER BY cust_g.name, cust.firstname, cust.lastname
 ");
 
 

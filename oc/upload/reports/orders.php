@@ -51,6 +51,8 @@ if (!defined('DIR_APPLICATION')) {
 
 define ("FILENAME", "orders"); //Export default filename
 
+$orders_year = isset($_GET["year"]) ? $_GET["year"] : date("Y");
+
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
 SELECT
@@ -82,7 +84,7 @@ SELECT
 FROM ocdevon.oc_order
 LEFT JOIN oc_order_product ON oc_order.order_id = oc_order_product.order_id
 LEFT JOIN oc_order_status ON oc_order.order_status_id = oc_order_status.order_status_id
-WHERE oc_order_status.order_status_id > 0
+WHERE oc_order_status.order_status_id > 0 AND year(oc_order.date_added) = " . $orders_year . " 
 ORDER BY oc_order.order_id, oc_order_product.product_id ASC
 
 ");
@@ -132,10 +134,9 @@ if ($password == PASSWORD) {
   
           //Print the table rows as an Excel row with the column name as a header
           echo ucwords($setMainHeader)."\n".$setData."\n";
-  }
-  //Message to display in case of wrong access password
-  else {
-          $uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
-          echo "Invalid password! Remember to write the URL properly and include your password:<BR>".(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]".$uri_parts[0]."?pw=your_password";
-  }
+}
+//Message to display in case of wrong access password
+else {
+        echo "Nope";
+}
   ?>                  

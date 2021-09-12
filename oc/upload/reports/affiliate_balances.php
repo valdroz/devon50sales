@@ -14,6 +14,8 @@ if (!defined('DIR_APPLICATION')) {
 
 define ("FILENAME", "transactions"); //Export default filename
 
+$orders_year = isset($_GET["year"]) ? $_GET["year"] : date("Y");
+
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
 (SELECT 
@@ -35,7 +37,8 @@ WHERE
 	cust.customer_group_id = gr.customer_group_id AND 
     af.customer_id = cust.customer_id AND
     prod.order_id = tr.order_id AND
-    oc_order.order_id = tr.order_id
+    oc_order.order_id = tr.order_id AND 
+    year(oc_order.date_added) = " . $orders_year . " 
 
 GROUP BY
 	cust.customer_id,
@@ -65,7 +68,8 @@ WHERE
 	cust.customer_group_id = gr.customer_group_id AND 
     af.customer_id = cust.customer_id AND
     prod.order_id = tr.order_id AND
-    oc_order.order_id = tr.order_id
+    oc_order.order_id = tr.order_id AND 
+    year(oc_order.date_added) = " . $orders_year . " 
 
 GROUP BY
 	cust.customer_id,

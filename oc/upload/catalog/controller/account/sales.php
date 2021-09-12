@@ -38,16 +38,37 @@ class ControllerAccountSales extends Controller {
 			$page = 1;
 		}
 
+		$current_year = date('Y');
+
+		if (isset($this->request->get['year'])) {
+			$orders_year = $this->request->get['year'];
+		} else {
+			$orders_year = $current_year;
+		}		
+
 		$data['transactions'] = array();
 
+		$data['orders_year'] = $orders_year;
+
+		$orders_year_choices = $this->model_account_sales->getTransactionYears();
+		
+		if (sizeof($orders_year_choices) > 0 ) {
+			if ($orders_year_choices[0] != $current_year) {
+				$this->array_insert($orders_year_choices,0,$current_year);
+			}
+		}
+
+		$data['orders_year_choices'] = $orders_year_choices;
+
 		$filter_data = array(
+			'year'	=> $orders_year,
 			'sort'  => 'date_added',
 			'order' => 'DESC',
 			'start' => ($page - 1) * 10,
 			'limit' => 10
 		);
 
-		$transaction_total = $this->model_account_sales->getTotalTransactions();
+		$transaction_total = $this->model_account_sales->getTotalTransactions($filter_data);
 
 		$results = $this->model_account_sales->getTransactions($filter_data);
 
@@ -81,13 +102,14 @@ class ControllerAccountSales extends Controller {
 		$pagination->total = $transaction_total;
 		$pagination->page = $page;
 		$pagination->limit = 10;
-		$pagination->url = $this->url->link('account/sales', 'page={page}', true);
+		$pagination->url = $this->url->link('account/sales', 'page={page}&year=' . $orders_year, true);
 
 		$data['pagination'] = $pagination->render();
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($transaction_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($transaction_total - 10)) ? $transaction_total : ((($page - 1) * 10) + 10), $transaction_total, ceil($transaction_total / 10));
 
 		$data['continue'] = $this->url->link('account/account', '', true);
+		$data['this_page_url'] = $this->url->link('account/sales', '', true);
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
@@ -97,5 +119,25 @@ class ControllerAccountSales extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 
 		$this->response->setOutput($this->load->view('account/sales', $data));
+	}
+
+
+	/**
+	 * @param array      $array
+	 * @param int|string $position
+	 * @param mixed      $insert
+	 */
+	public function array_insert(&$array, $position, $insert)
+	{
+		if (is_int($position)) {
+			array_splice($array, $position, 0, $insert);
+		} else {
+			$pos   = array_search($position, array_keys($array));
+			$array = array_merge(
+				array_slice($array, 0, $pos),
+				$insert,
+				array_slice($array, $pos)
+			);
+		}
 	}
 }

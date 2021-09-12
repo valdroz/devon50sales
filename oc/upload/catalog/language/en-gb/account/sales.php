@@ -29,6 +29,8 @@ $_['column_comment'] = 'Comment';
 $_['text_account']       = 'Account';
 $_['text_sales']         = 'Your Sales';
 $_['text_total']         = 'Your current balance is:';
-$_['text_empty']         = 'You do not have any sales!';
+$_['text_empty']         = 'No sales found!';
 
 $_['button_back']   = 'Back';
+
+$_['text_orders_year'] = 'Select year';

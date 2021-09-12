@@ -14,42 +14,49 @@ if (!defined('DIR_APPLICATION')) {
 
 define ("FILENAME", "scout_sales"); //Export default filename
 
+$orders_year = isset($_GET["year"]) ? $_GET["year"] : date("Y");
+
+
 //SQL Query, customize if if you need any more (or less) fields
 define ("SQL","
 SELECT 
- cust.customer_id as 'Scout ID',
- cust.firstname as 'Scout First Name',
- cust.lastname as 'Scout Last Name',
- gr.name as 'Group',
- cust.email as 'Email',
- oc_order.date_added as 'Order Date',
- oc_order.order_id as 'Order ID',
- prod.name as 'Product Name',
- prod.price as 'Product Price',
- prod.quantity as 'Quantity',
- prod.total as 'Total',
- oc_order.shipping_firstname as 'Shipping: First Name',
- oc_order.shipping_lastname as 'Last Name',
- oc_order.shipping_company as 'Company Name',
- oc_order.shipping_address_1 as 'Address Line 1',
- oc_order.shipping_address_2 as 'Address Line 2',
- oc_order.shipping_city as 'City',
- oc_order.shipping_postcode as 'Postal Code',
- oc_order.shipping_country as 'Country'
-FROM 
- oc_customer AS cust, 
- oc_customer_affiliate as af,
- oc_customer_transaction AS tr, 
- oc_customer_group_description AS gr,
- oc_order_product as prod,
- oc_order
-WHERE tr.customer_id = cust.customer_id AND 
-	cust.customer_group_id = gr.customer_group_id AND 
+    cust.customer_id as 'Scout ID', 
+    cust.firstname as 'Scout First Name', 
+    cust.lastname as 'Scout Last Name',
+    p.name AS 'Patrol name',
+    cust.email as 'Email', 
+    oc_order.date_added as 'Order Date', 
+    oc_order.order_id as 'Order ID',
+    prod.name as 'Product Name', 
+    prod.price as 'Product Price', 
+    prod.quantity as 'Quantity', 
+    prod.total as 'Total',
+    oc_order.shipping_firstname as 'Shipping: First Name',
+    oc_order.shipping_lastname as 'Last Name',
+    oc_order.shipping_company as 'Company Name', 
+    oc_order.shipping_address_1 as 'Address Line 1',
+    oc_order.shipping_address_2 as 'Address Line 2',
+    oc_order.shipping_city as 'City',
+    oc_order.shipping_postcode as 'Postal Code',
+    oc_order.shipping_country as 'Country' 
+FROM ocdevon.oc_customer AS cust, 
+    ocdevon.oc_customer_affiliate as af, 
+    ocdevon.oc_customer_transaction AS tr,
+    ocdevon.oc_customer_group_description AS gr, 
+    ocdevon.oc_order_product as prod, 
+    ocdevon.oc_order,
+    ocdevon.oc_custom_field_value_description p 
+WHERE tr.customer_id = cust.customer_id AND
+    cust.customer_group_id = gr.customer_group_id AND
     af.customer_id = cust.customer_id AND
     prod.order_id = tr.order_id AND
-    oc_order.order_id = tr.order_id
-ORDER BY cust.customer_id asc, oc_order.date_added desc
- ");
+    oc_order.order_id = tr.order_id 
+    and year(oc_order.date_added) = " . $orders_year . "
+    and cust.customer_group_id = 2
+    and p.custom_field_id = 2 
+    and p.custom_field_value_id = JSON_UNQUOTE(JSON_EXTRACT(cust.custom_field,'$.\"2\"')) 
+ORDER BY cust.customer_id asc, oc_order.date_added desc;
+");
 
 $password = isset($_GET["pw"]) ? $_GET["pw"] : $_SERVER['HTTP_PW'];
 

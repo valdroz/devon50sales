@@ -37,7 +37,8 @@ class ModelAccountSales extends Model {
 			af.customer_id = cust.customer_id AND
 			prod.order_id = tr.order_id AND
 			oc_order.order_id = tr.order_id AND 
-			cust.customer_id = '" . $cust_id . "'
+			cust.customer_id = '" . $cust_id . "' AND 
+			year(oc_order.date_added) = " . (int)$data['year'] . "
 		ORDER BY oc_order.date_added desc
 		 ";
 
@@ -48,10 +49,24 @@ class ModelAccountSales extends Model {
 		return $query->rows;
 	}
 
-	public function getTotalTransactions() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "customer_transaction` WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+	public function getTotalTransactions($data = array()) {
+		$query = $this->db->query("SELECT COUNT(*) AS total 
+			FROM `" . DB_PREFIX . "customer_transaction` 
+			WHERE customer_id = '" . (int)$this->customer->getId() . "' AND year(date_added) = " . (int)$data['year'] . "");
 
 		return $query->row['total'];
+	}
+
+	public function getTransactionYears() {
+		$query = $this->db->query("SELECT distinct year(date_added) as year_added FROM `" . DB_PREFIX . "customer_transaction` order by year_added desc;");
+
+		$years = array();
+
+		foreach ($query->rows as $result) {
+			$years[] = $result['year_added'];
+		}
+
+		return $years;
 	}
 
 }
