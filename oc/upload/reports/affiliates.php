@@ -22,7 +22,7 @@ SELECT af.customer_id as 'Scout ID',
  cust.email as 'Email',
  p.name AS 'Patrol name',
  af.tracking as 'Tracking Code',
- CASE af.status WHEN 1 THEN 'Approved' WHEN 0 THEN 'Not yet approved' END AS 'Status'
+ CASE af.status WHEN 1 THEN 'Approved' WHEN 0 THEN 'Not yet approved' END AS 'Status' 
 FROM 
 	oc_customer_affiliate as af, 
     oc_customer as cust, 
@@ -57,11 +57,11 @@ if ($password == PASSWORD) {
     $rowLine = '';
     foreach ($rec as $value) {
       if(!isset($value) || $value == "") {
-        $value = ", ";
+        $value = ",";
       } else {
         //Escape all the special characters
         $value = strip_tags(str_replace('"', '""', $value));
-        $value = '"' . $value . '"' . ", ";
+        $value = '"' . $value . '"' . ",";
       }
       $rowLine .= $value;
     }

@@ -77,11 +77,11 @@ if ($password == PASSWORD) {
           $rowLine = '';
           foreach ($rec as $value) {
                 if(!isset($value) || $value == "") {
-                  $value = ", ";
+                  $value = ",";
                 } else {
                   //Escape all the special characters
                   $value = strip_tags(str_replace('"', '""', $value));
-                  $value = '"' . $value . '"' . ", ";
+                  $value = '"' . $value . '"' . ",";
                 }
                 $rowLine .= $value;
           }
