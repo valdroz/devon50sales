@@ -17,9 +17,28 @@
 -->
     {% set class = 'col-sm-12' %}
     <div id="content" class="{{ class }}">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
+      <h2>{{ heading_title }}
+              <select name="orders_year" id="input-orders-year" oninput="onYearSelected()">
+                
+                {% for year_choice in orders_year_choices %}
+                  {% if year_choice == orders_year %}
+                
+                <option value="{{ year_choice }}" selected="selected">{{ year_choice }}</option>
+                
+                  {% else %}
+                
+                <option value="{{ year_choice }}">{{ year_choice }}</option>
+                
+                  {% endif %}
+                {% endfor %}
+              
+              </select>
+              
+              {{text_total_amount}} {{ total_amount }}
+       </h2>
 
-        <div class="row">
+      
+        {# <div class="row">
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-orders-year">{{ text_orders_year }}</label>
             <div class="col-sm-4">
@@ -39,12 +58,13 @@
               
               </select>
             </div>
+            <label class="col-sm-4 control-label">$ {{ total_amount }}</label>
           </div>
         </div>
 
       <div class="row">
         <br>
-      </div>
+      </div> #}
         
       <div class="row">
         <div class="table-responsive">
