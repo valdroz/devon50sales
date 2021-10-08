@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']      = 'Your Sales';
+$_['heading_title']      = 'Your Sales for Year: ';
 
 // Column
 $_['column_order_date']  = 'Order Date';
@@ -30,6 +30,7 @@ $_['text_account']       = 'Account';
 $_['text_sales']         = 'Your Sales';
 $_['text_total']         = 'Your current balance is:';
 $_['text_empty']         = 'No sales found!';
+$_['text_total_amount']  = 'Total amount:';
 
 $_['button_back']   = 'Back';
 

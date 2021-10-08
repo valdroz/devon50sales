@@ -70,9 +70,13 @@ class ControllerAccountSales extends Controller {
 
 		$transaction_total = $this->model_account_sales->getTotalTransactions($filter_data);
 
-		$results = $this->model_account_sales->getTransactions($filter_data);
+		$results = $this->model_account_sales->getTransactions($filter_data);		
 
 		$currency = $this->config->get('config_currency');
+
+		$total_amount = $this->model_account_sales->getSaleTotal($filter_data);
+		$formatter = numfmt_create( 'en_US', NumberFormatter::CURRENCY );
+		$total_amount = numfmt_format_currency($formatter, $total_amount, "USD");
 
 		foreach ($results as $result) {
 			$data['transactions'][] = array(
@@ -117,6 +121,8 @@ class ControllerAccountSales extends Controller {
 		$data['content_bottom'] = $this->load->controller('common/content_bottom');
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
+
+		$data['total_amount'] = $total_amount;
 
 		$this->response->setOutput($this->load->view('account/sales', $data));
 	}
