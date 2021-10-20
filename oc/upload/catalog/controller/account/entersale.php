@@ -51,6 +51,7 @@ class ControllerAccountEntersale extends Controller {
 
 		$data['countries'] = $this->model_localisation_country->getCountries();	
 		$data['payment_methods'] = $this->model_account_entersale->getPaymentMethods();
+		$data['shipping_methods'] = $this->model_account_entersale->getShipingMethods();
 		
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 		
@@ -103,8 +104,10 @@ class ControllerAccountEntersale extends Controller {
 			$data['shipping_zone'] = $zone['code'];
 			$data['shipping_zone_id'] = $this->request->post['zone_id']; 
 			$data['shipping_address_format'] = '';
-			$data['shipping_method'] = 'Free Shipping';
-			$data['shipping_code'] = 'free.free';		
+			// $data['shipping_method'] = 'Free Shipping';
+			// $data['shipping_code'] = 'free.free';		
+			$data['shipping_method'] = $this->model_account_entersale->getShipingMethod($this->request->post['shipping_code']);
+			$data['shipping_code'] = $this->request->post['shipping_code'];		
 
 			$data['comment'] = 'Entered by scout';
 			$wreath_quantity = intval($this->request->post['wreath_quantity']);
@@ -317,7 +320,11 @@ class ControllerAccountEntersale extends Controller {
 			$data['error_payment_method'] = '';
 		}
 
-
+		if (isset($this->error['shipping_code'])) {
+			$data['error_shipping_code'] = $this->error['shipping_code'];
+		} else {
+			$data['error_shipping_code'] = '';
+		}
 
 		
 		if (isset($this->request->post['order_date'])) {
@@ -581,6 +588,11 @@ class ControllerAccountEntersale extends Controller {
 			$this->error['warning'] = $this->language->get('error_form');
 		}
 	
+		if ( !isset($this->request->post['shipping_code']) || utf8_strlen(trim($this->request->post['shipping_code'])) < 1 ) {
+			$this->error['shipping_code'] = $this->language->get('error_shipping_code');
+			$this->error['warning'] = $this->language->get('error_form');
+		}
+
 		if ($wreath_quantity == 0 && $swag_quantity == 0 && $donate_quantity == 0) {
 			$this->error['wreath_quantity'] = $this->language->get('error_missing_quantity');
 			$this->error['swag_quantity'] = $this->language->get('error_missing_quantity');

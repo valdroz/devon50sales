@@ -98,6 +98,7 @@ class ControllerAccountSales extends Controller {
 				'email' => $result['email'],
 				'telephone' => $result['telephone'],
 				'comment' => $result['comment'],
+				'shipping_code' => $result['shipping_code'],
 				'payment_method' => strlen($result['payment_method']) > 22 ? substr($result['payment_method'], 0, 22) . '...' : $result['payment_method']
 			);
 		}

@@ -24,6 +24,7 @@ class ModelAccountSales extends Model {
 		 oc_order.email as email,
 		 oc_order.telephone as telephone,		 
 		 oc_order.payment_method as payment_method,
+		 oc_order.shipping_code as shipping_code,
 		 oc_order.comment as comment
 		FROM 
 		 oc_customer AS cust, 

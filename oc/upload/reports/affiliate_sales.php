@@ -37,16 +37,21 @@ SELECT
     oc_order.shipping_address_1 as 'Address Line 1',
     oc_order.shipping_address_2 as 'Address Line 2',
     oc_order.shipping_city as 'City',
+    oc_order.shipping_zone as 'State',
     oc_order.shipping_postcode as 'Postal Code',
-    oc_order.shipping_country as 'Country' 
-FROM ocdevon.oc_customer AS cust, 
+    oc_order.shipping_country as 'Country',
+    oc_order.shipping_method as 'Delivery',
+    oc_order.shipping_code as 'Code',
+    oc_order.email as 'Contact Email',
+    oc_order.telephone as 'Contact Phone' 
+ FROM ocdevon.oc_customer AS cust, 
     ocdevon.oc_customer_affiliate as af, 
     ocdevon.oc_customer_transaction AS tr,
     ocdevon.oc_customer_group_description AS gr, 
     ocdevon.oc_order_product as prod, 
     ocdevon.oc_order,
     ocdevon.oc_custom_field_value_description p 
-WHERE tr.customer_id = cust.customer_id AND
+ WHERE tr.customer_id = cust.customer_id AND
     cust.customer_group_id = gr.customer_group_id AND
     af.customer_id = cust.customer_id AND
     prod.order_id = tr.order_id AND
@@ -55,7 +60,7 @@ WHERE tr.customer_id = cust.customer_id AND
     and cust.customer_group_id = 2
     and p.custom_field_id = 2 
     and p.custom_field_value_id = JSON_UNQUOTE(JSON_EXTRACT(cust.custom_field,'$.\"2\"')) 
-ORDER BY cust.customer_id asc, oc_order.date_added desc;
+ ORDER BY cust.customer_id asc, oc_order.date_added desc;
 ");
 
 $password = isset($_GET["pw"]) ? $_GET["pw"] : $_SERVER['HTTP_PW'];

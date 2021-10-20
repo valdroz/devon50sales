@@ -79,6 +79,7 @@
                 <td class="text-right"><b>{{ column_total }}</b></td>
                 <td class="text-right"><b>{{ column_payment_method }}</b></td>
                 <td class="text-left"><b>{{ column_sh_address }}</b></td>
+                <td class="text-left"><b>{{ column_shipping_method }}</b></td>
                 <td class="text-left"><b>{{ column_contact }}</b></td>
                 <td class="text-left"><b>{{ column_comment }}</b></td>
               </tr>
@@ -108,6 +109,18 @@
                   {% endif %}
                   {{ transaction.sh_city }}, {{ transaction.sh_zone }} {{ transaction.sh_postcode }}<br>
                   {{ transaction.sh_country }}
+              </td>
+
+              <td class="text-right">
+                  {% if transaction.shipping_code == 'free.free' %}
+                  Free Regular
+                  {% elseif transaction.shipping_code == 'pickup.pickup' %}
+                  Early Free <br>Before Thanksgiving  
+                  {% elseif transaction.shipping_code == 'flat.flat' %}
+                  Vendor ships<br>from Maine
+                  {% else %}
+                  Free?
+                  {% endif %}
               </td>
 
               <td class="text-left">

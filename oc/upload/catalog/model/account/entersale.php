@@ -317,5 +317,37 @@ class ModelAccountEntersale extends Model {
 		return '';
 	}
 
+	public function getShipingMethods() {
+		return array(
+			array(
+				"code" => "free.free",
+				"title" => "Free no rush delivery (untill Dec 20)"
+			),
+			array(
+				"code" => "pickup.pickup",
+				"title" => "Early delivery (before Thanksgiving)"
+			)
+		);
+	}
+
+	public function getShipingMethod($code) {
+
+		switch ($code) {
+			case 'free.free':
+				return 'Free Delivery';
+				
+			case 'pickup.pickup':
+				return 'Early Delivery';
+				
+			case 'flat.flat':
+				return 'Flat Shipping Rate';
+
+			case 'item.item':
+				return 'Itemized Shipping Rate';
+	
+			}
+		return '';
+	}
+
 
 }

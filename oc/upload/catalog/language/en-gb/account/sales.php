@@ -24,6 +24,7 @@ $_['column_telephone'] = 'Phone';
 $_['column_sh_address']      = 'Delivery to';
 $_['column_contact'] = 'Contact';
 $_['column_comment'] = 'Comment';
+$_['column_shipping_method'] = 'Delivery';
 
 // Text
 $_['text_account']       = 'Account';
