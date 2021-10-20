@@ -25,6 +25,9 @@ root@{dockerhost}:/ sh oc-install.sh
 ```
 
 .. next open http://localhost/index.php in your browser and complete setup flow. 
+In installation wizard step 3, enter local development credentials as follows.
+
+![Step 3](install-wizard-step-3.png)
 
 
 4. Your OC SandBox environment is ready.
