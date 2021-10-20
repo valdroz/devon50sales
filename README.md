@@ -13,26 +13,21 @@ make build
 3. Setup OC SandBox:
 
 ```bash
-# Prepare directory for OS SandBox Files
-mkdir www
 # Start Docker container
 make run
 ```
 
-.. once in docker terminal run installation script as:
+.. once in docker terminal, run installation script as follows:
 
 ```bash
 # Needed only once
 root@{dockerhost}:/ sh oc-install.sh
 ```
 
-.. next open http://localhost/index.php in your browser and complete setup flow.
+.. next open http://localhost/index.php in your browser and complete setup flow. 
+In installation wizard step 3, enter local development credentials as follows.
 
-.. once completed run following command on Docker host to ensure proper ownership:
-
-```bash
-root@{dockerhost}:/ chown -R www-data:www-data /var/www
-```
+![Step 3](install-wizard-step-3.png)
 
 
 4. Your OC SandBox environment is ready.
