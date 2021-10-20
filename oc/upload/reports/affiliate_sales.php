@@ -44,8 +44,7 @@ SELECT
     oc_order.shipping_method as 'Delivery',
     oc_order.shipping_code as 'Code',
     oc_order.email as 'Contact Email',
-    oc_order.telephone as 'Contact Phone',
-    oc_order.comment as 'Comments' 
+    oc_order.telephone as 'Contact Phone' 
  FROM ocdevon.oc_customer AS cust, 
     ocdevon.oc_customer_affiliate as af, 
     ocdevon.oc_customer_transaction AS tr,
