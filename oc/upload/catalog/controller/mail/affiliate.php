@@ -90,6 +90,8 @@ class ControllerMailAffiliate extends Controller {
 			} else {
 				$data['customer_group'] = '';
 			}
+
+			$this->log->write('INFO: Sending new scout notification to: ' . $this->config->get('config_email'));
 			
 			$mail = new Mail($this->config->get('config_mail_engine'));
 			$mail->parameter = $this->config->get('config_mail_parameter');
@@ -105,6 +107,8 @@ class ControllerMailAffiliate extends Controller {
 			$mail->setSubject(html_entity_decode($this->language->get('text_new_affiliate'), ENT_QUOTES, 'UTF-8'));
 			$mail->setText($this->load->view('mail/affiliate_alert', $data));
 			$mail->send();
+
+			$this->log->write('INFO: Success.');
 
 			// Send to additional alert emails if new affiliate email is enabled
 			$emails = explode(',', $this->config->get('config_mail_alert_email'));

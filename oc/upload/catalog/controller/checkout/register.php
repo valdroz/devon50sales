@@ -36,7 +36,7 @@ class ControllerCheckoutRegister extends Controller {
 		if (isset($this->session->data['shipping_address']['zone_id'])) {
 			$data['zone_id'] = $this->session->data['shipping_address']['zone_id'];
 		} else {
-			$data['zone_id'] = '';
+			$data['zone_id'] = '3663';
 		}
 
 		$this->load->model('localisation/country');
