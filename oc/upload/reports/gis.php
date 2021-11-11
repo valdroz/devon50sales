@@ -41,9 +41,10 @@ SELECT
  WHERE tr.customer_id = cust.customer_id AND
     af.customer_id = cust.customer_id AND
     prod.order_id = tr.order_id AND
-    oc_order.order_id = tr.order_id 
-    and year(oc_order.date_added) = " . $orders_year . "
-    and cust.customer_group_id = 2
+    oc_order.order_id = tr.order_id AND
+    year(oc_order.date_added) = " . $orders_year . " AND
+    cust.customer_group_id = 2 AND
+    prod.product_id in (50,51) 
 ) AS sales 
 GROUP BY Order_ID, Scout_ID;
 ");
