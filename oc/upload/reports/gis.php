@@ -20,7 +20,7 @@ define ("FILENAME", "gis" . $orders_year ); //Export default filename
 define ("SQL","
 SELECT Order_ID, Scout_ID, 
 	GROUP_CONCAT(Products SEPARATOR ', ') AS 'Products',
-    First_Name, Last_Name, Address, City, State, Zip
+    First_Name, Last_Name, Address_Line_1, Address_Line_2, City, State, Postal_Code
 FROM (
 SELECT 
     oc_order.order_id as 'Order_ID',
@@ -29,10 +29,11 @@ SELECT
     CONCAT( prod.name, ' #', prod.quantity) AS 'Products', 
     oc_order.shipping_firstname as 'First_Name',
     oc_order.shipping_lastname as 'Last_Name',
-    oc_order.shipping_address_1 as 'Address',
+    oc_order.shipping_address_1 as 'Address_Line_1',
+    oc_order.shipping_address_2 as 'Address_Line_2',
     oc_order.shipping_city as 'City',
     oc_order.shipping_zone as 'State',
-    oc_order.shipping_postcode as 'Zip'
+    oc_order.shipping_postcode as 'Postal_Code'
  FROM ocdevon.oc_customer AS cust, 
     ocdevon.oc_customer_affiliate as af, 
     ocdevon.oc_customer_transaction AS tr,
