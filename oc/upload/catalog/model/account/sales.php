@@ -82,11 +82,12 @@ class ModelAccountSales extends Model {
 
 	public function getTotalTransactions($data = array()) {
 		$query = $this->db->query("SELECT COUNT(*) AS total 
-			FROM `" . DB_PREFIX . "customer_transaction` 
-			WHERE customer_id = '" . (int)$this->customer->getId() . "' AND year(date_added) = " . (int)$data['year'] . "");
+			FROM " . DB_PREFIX . "customer_transaction AS ct, " . DB_PREFIX . "order_product AS op 
+			WHERE ct.order_id = op.order_id AND ct.customer_id = '" . (int)$this->customer->getId() . "' AND year(ct.date_added) = " . (int)$data['year'] . "");
 
 		return $query->row['total'];
 	}
+
 
 	public function getTransactionYears() {
 		$query = $this->db->query("SELECT distinct year(date_added) as year_added FROM `" . DB_PREFIX . "customer_transaction` order by year_added desc;");
