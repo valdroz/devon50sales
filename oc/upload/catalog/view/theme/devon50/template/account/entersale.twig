@@ -26,9 +26,9 @@
             <label class="col-sm-2 control-label" for="input-oders-date">{{ entry_order_date }}</label>
             <div class="col-sm-2 input-group date" style="padding-left: 15px">
               <input type="text" name="order_date" value="{{ order_date }}" placeholder="{{ entry_order_date }}" 
-                  data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" readonly />
+                  data-date-format="MM/DD/YYYY" id="input-order-date" class="form-control" />
               <span class="input-group-btn">
-                <button type="button" class="btn btn-default" disabled><i class="fa fa-calendar"></i></button>
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
               </span>
             </div>
               {% if error_order_date %}
