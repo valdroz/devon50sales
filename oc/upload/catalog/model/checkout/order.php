@@ -41,6 +41,9 @@ class ModelCheckoutOrder extends Model {
 			}
 		}
 
+		$this->load->model('extension/geo/location');
+		$this->model_extension_geo_location->recordGeoLocationForOrder($order_id, $data);
+
 		return $order_id;
 	}
 

@@ -1,4 +1,6 @@
 <?php
+
+
 class ModelAccountEntersale extends Model {
     
 	public function getOrder($order_id) {
@@ -181,6 +183,7 @@ class ModelAccountEntersale extends Model {
 
 	public function addOrder($data) {
 
+
 		$this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET invoice_prefix = '" . $this->db->escape($data['invoice_prefix']) .
 		 "', store_id = '" . (int)$data['store_id'] . 
 		 "', store_name = '" . $this->db->escape($data['store_name']) . 
@@ -284,6 +287,9 @@ class ModelAccountEntersale extends Model {
 				$this->db->query("UPDATE " . DB_PREFIX . "product SET quantity = (quantity - " . (int)$product['quantity'] . ") WHERE product_id = '" . (int)$product['product_id'] . "' AND subtract = '1'");
 			}
 		}
+
+		$this->load->model('extension/geo/location');
+		$this->model_extension_geo_location->recordGeoLocationForOrder($order_id, $data);		
 
 		return $order_id;
 

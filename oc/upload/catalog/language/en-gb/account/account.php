@@ -26,5 +26,7 @@ $_['text_affiliate_edit'] = 'Edit your scout affiliate payment information (not 
 $_['text_tracking']       = 'View and print your QR Code and get Tracking Code and URL for sharing';
 $_['text_sales']          = 'View your sales, devicery address and quantities';
 $_['text_entersale']      = 'Enter cash or check sale';
+$_['text_salesmap']       = 'View sales GIS Map';
+
 
 

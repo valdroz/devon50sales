@@ -25,6 +25,7 @@ class ControllerAccountEntersale extends Controller {
 		$this->load->model('account/customer');
 		$this->load->model('localisation/country');
 		$this->load->model('localisation/zone');
+		$this->load->model('extension/geo/location');
 
 
 		$customer_info = $this->model_account_customer->getCustomer($this->customer->getId());

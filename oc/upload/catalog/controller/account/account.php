@@ -80,6 +80,7 @@ class ControllerAccountAccount extends Controller {
 		
 		if ($affiliate_info) {
 			$data['sales'] = $this->url->link('account/sales', '', true);
+			$data['salesmap'] = $this->url->link('account/salesmap', '', true);			
 			$data['tracking'] = $this->url->link('account/tracking', '', true);
 			$data['entersale'] = $this->url->link('account/entersale', '', true);
 		} else {
