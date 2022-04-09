@@ -2,6 +2,8 @@
 
 ## Prepare your local play ground
 
+TODO: Document `podman` installation procedure and the use.
+
 1. If not done already, install "Docker Desktop" on your local computer. Follow instructions at https://www.docker.com/get-started
 
 2. Build Docker image next for OC SandBox, like so:
