@@ -17,37 +17,18 @@
 -->
     {% set class = 'col-sm-12' %}
     <div id="content" class="{{ class }}">{{ content_top }}
-      <div>
-        {{ heading_title }}
-              <select name="orders_year" id="input-orders-year" oninput="onYearSelected()">
-                
-                {% for year_choice in orders_year_choices %}
-                  {% if year_choice == orders_year %}
-                
-                    <option value="{{ year_choice }}" selected="selected">{{ year_choice }}</option>
-                
-                  {% else %}
-                
-                    <option value="{{ year_choice }}">{{ year_choice }}</option>
-                
-                  {% endif %}
-                {% endfor %}
-              
-              </select>
-
-       </div>
-
-      <div id="map" style="height: 500px; width: 100%;">
-      
+      <div id="map" style="height: 600px; width: 100%;">      
       </div>
+
+    <div style="text-align:left">
+        <span style="height: 9px;  width: 9px; background-color: #2c9e60; display: inline-block; border-radius: 50%;"></span> - Yours past sales; 
+        <span style="height: 9px;  width: 9px; background-color: #4873f8; display: inline-block; border-radius: 50%;"></span> - Yours current sales;<br> 
+        <span style="height: 9px;  width: 9px; background-color: #ab0000; display: inline-block; border-radius: 50%;"></span> - Others past sales; 
+        <span style="height: 9px;  width: 9px; background-color: #f20000; display: inline-block; border-radius: 50%;"></span> - Others current sales; 
+    </div>
 
 
       <br>
-      
-        
-      <div class="buttons clearfix">
-        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_back }}</a></div>
-      </div>
 
       {{ content_bottom }}
 
@@ -61,19 +42,13 @@
 
 <script type="text/javascript"><!--
 
-  function onYearSelected() {
-    var selectedYear = document.getElementById("input-orders-year").value;
-
-    window.location.replace("{{ this_page_url }}&year=" + selectedYear);
-  }
-
-
 	mapboxgl.accessToken = 'pk.eyJ1IjoidmFsZHJveiIsImEiOiJja2xwYzJwZWYweGFoMnVyMDZ3MWVqbjRsIn0.Q9A8js9KE8rOJ_F6YIhYrA';
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-75.43, 40.04],
-        zoom: 11.15
+        // style: 'mapbox://styles/mapbox/streets-v11',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [-75.52, 40.06], //40.06252846492766, -75.52011866441217
+        zoom: 9.00
     });
 
     map.addControl(new mapboxgl.NavigationControl({
@@ -81,134 +56,160 @@
     }));
 
     map.on('load', () => {
-        map.addSource('places', {
+        map.addSource('all_old', {
             'type': 'geojson',
             'data': {
                 'type': 'FeatureCollection',
                 'features': [
+                    {% if all_old %}
+                    {% for order in all_old %}
+                    {% if not loop.first %},{% endif %}
                     {
                         'type': 'Feature',
                         'properties': {
                             'description':
-                                '<strong>Titile</strong><p>Lorem ipsum ...</p>'
+                                '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
                         },
                         'geometry': {
                             'type': 'Point',
-                            'coordinates': [-75.43907311370121, 40.04330821749126]
-                        }
-                    }, 
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                '<strong>Big Backyard Beach Bash and Wine Fest</strong><p>EatBar (2761 Washington Boulevard Arlington VA) is throwing a Big Backyard Beach Bash and Wine Fest on Saturday, serving up conch fritters, fish tacos and crab sliders, and Red Apron hot dogs. 12:00-3:00 p.m. $25.</p>'
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.090372, 38.881189]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                '<strong>Ballston Arts & Crafts Market</strong><p>The Ballston Arts & Crafts Market sets up shop next to the Ballston metro this Saturday for the first of five dates this summer. Nearly 35 artists and crafters will be on hand selling their wares. 10:00-4:00 p.m.</p>'
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.111561, 38.882342]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                "<strong>Seersucker Bike Ride and Social</strong><p>Feeling dandy? Get fancy, grab your bike, and take part in this year's Seersucker Social bike ride from Dandies and Quaintrelles. After the ride enjoy a lawn party at Hillwood with jazz, cocktails, paper hat-making, and more. 11:00-7:00 p.m.</p>"
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.052477, 38.943951]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                '<strong>Capital Pride Parade</strong><p>The annual Capital Pride Parade makes its way through Dupont this Saturday. 4:30 p.m. Free.</p>'
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.043444, 38.909664]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                '<strong>Muhsinah</strong><p>Jazz-influenced hip hop artist Muhsinah plays the Black Cat (1811 14th Street NW) tonight with Exit Clov and Gods’illa. 9:00 p.m. $12.</p>'
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.031706, 38.914581]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                "<strong>A Little Night Music</strong><p>The Arlington Players' production of Stephen Sondheim's <em>A Little Night Music</em> comes to the Kogod Cradle at The Mead Center for American Theater (1101 6th Street SW) this weekend and next. 8:00 p.m.</p>"
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.020945, 38.878241]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'properties': {
-                            'description':
-                                '<strong>Truckeroo</strong><p>Truckeroo brings dozens of food trucks, live music, and games to half and M Street SE (across from Navy Yard Metro Station) today from 11:00 a.m. to 11:00 p.m.</p>'
-                        },
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-77.007481, 38.876516]
+                            'coordinates': [{{order.lon}}, {{order.lat}}]
                         }
                     }
+                    {% endfor %}
+                    {% endif %}
                 ]
             }
         });
+        map.addSource('my_old', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': [
+                    {% if my_old %}
+                    {% for order in my_old %}
+                    {% if not loop.first %},{% endif %}
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [{{order.lon}}, {{order.lat}}]
+                        }
+                    }
+                    {% endfor %}
+                    {% endif %}
+                ]
+            }
+        });
+        map.addSource('all_current', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': [
+                    {% if all_current %}
+                    {% for order in all_current %}
+                    {% if not loop.first %},{% endif %}
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [{{order.lon}}, {{order.lat}}]
+                        }
+                    }
+                    {% endfor %}
+                    {% endif %}
+                ]
+            }
+        });
+        map.addSource('my_current', {
+            'type': 'geojson',
+            'data': {
+                'type': 'FeatureCollection',
+                'features': [
+                    {% if my_current %}
+                    {% for order in my_current %}
+                    {% if not loop.first %},{% endif %}
+                    {
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [{{order.lon}}, {{order.lat}}]
+                        }
+                    }
+                    {% endfor %}
+                    {% endif %}
+
+                ]
+            }
+        });
+      
         // Add a layer showing the places.
         map.addLayer({
-            'id': 'places',
+            'id': 'all_old',
             'type': 'circle',
-            'source': 'places',
+            'source': 'all_old',
             'paint': {
-                'circle-color': '#4264fb',
-                'circle-radius': 6,
+                'circle-color': '#ab0000',
+                'circle-radius': 5,
                 'circle-stroke-width': 2,
                 'circle-stroke-color': '#ffffff'
             }
         });
         
         map.addLayer({
-            'id': 'places2',
-            'type': 'square',
-            'source': 'places2',
+            'id': 'my_old',
+            'type': 'circle',
+            'source': 'my_old',
             'paint': {
-                'circle-color': '#eeaa88',
-                'circle-radius': 6,
+                'circle-color': '#2c9e60',
+                'circle-radius': 5,
                 'circle-stroke-width': 2,
                 'circle-stroke-color': '#ffffff'
             }
         });        
 
-        // Create a popup, but don't add it to the map yet.
+        map.addLayer({
+            'id': 'all_current',
+            'type': 'circle',
+            'source': 'all_current',
+            'paint': {
+                'circle-color': '#f20000',
+                'circle-radius': 5,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#ffffff'
+            }
+        });
+        
+        map.addLayer({
+            'id': 'my_current',
+            'type': 'circle',
+            'source': 'my_current',
+            'paint': {
+                'circle-color': '#4873f8',
+                'circle-radius': 5,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#ffffff'
+            }
+        });        
+
+// Create a popup, but don't add it to the map yet.
         const popup = new mapboxgl.Popup({
             closeButton: false,
             closeOnClick: false
         });
 
-        map.on('mouseenter', 'places', (e) => {
+        map.on('mouseenter', 'all_old', (e) => {
             // Change the cursor style as a UI indicator.
             map.getCanvas().style.cursor = 'pointer';
 
@@ -228,10 +229,87 @@
             popup.setLngLat(coordinates).setHTML(description).addTo(map);
         });
 
-        map.on('mouseleave', 'places', () => {
+        map.on('mouseleave', 'all_old', () => {
             map.getCanvas().style.cursor = '';
             popup.remove();
         });
+
+        map.on('mouseenter', 'my_old', (e) => {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+            // Copy coordinates array.
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const description = e.features[0].properties.description;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
+        });
+
+        map.on('mouseleave', 'my_old', () => {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+
+        map.on('mouseenter', 'all_current', (e) => {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+            // Copy coordinates array.
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const description = e.features[0].properties.description;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
+        });
+
+        map.on('mouseleave', 'all_current', () => {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+
+        map.on('mouseenter', 'my_current', (e) => {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+            // Copy coordinates array.
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const description = e.features[0].properties.description;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(coordinates).setHTML(description).addTo(map);
+        });
+
+        map.on('mouseleave', 'my_current', () => {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+        });
+
+
     });
 
 //--></script>

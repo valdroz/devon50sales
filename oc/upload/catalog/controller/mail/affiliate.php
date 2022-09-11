@@ -78,8 +78,9 @@ class ControllerMailAffiliate extends Controller {
 				$data['telephone'] = $args[1]['telephone'];		
 			}
 			
-			$data['website'] = html_entity_decode($args[1]['website'], ENT_QUOTES, 'UTF-8');
-			$data['company'] = $args[1]['company'];
+			// Scouts not need company as website 
+			// $data['website'] = html_entity_decode($args[1]['website'], ENT_QUOTES, 'UTF-8');
+			// $data['company'] = $args[1]['company'];
 							
 			$this->load->model('account/customer_group');
 

@@ -23,6 +23,7 @@ $_['text_event']                = 'Events';
 $_['text_extension']            = 'Extensions';
 $_['text_filter']               = 'Filters';
 $_['text_geo_zone']             = 'Geo Zones';
+$_['text_gis']                  = 'GIS';
 $_['text_information']          = 'Information';
 $_['text_installer']            = 'Installer';
 $_['text_language']             = 'Languages';

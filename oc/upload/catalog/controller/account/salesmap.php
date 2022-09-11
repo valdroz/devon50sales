@@ -1,5 +1,7 @@
 <?php
+
 class ControllerAccountSalesmap extends Controller {
+
 	public function index() {
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/salesmap', '', true);
@@ -39,57 +41,33 @@ class ControllerAccountSalesmap extends Controller {
 		}
 
 		$current_year = date('Y');
+		$current_month = date('m');
 
-		$data['transactions'] = array();
+		$cust_id = (int)$this->customer->getId();
 
-		$orders_year_choices = $this->model_account_salesmap->getTransactionYears();
-		
-		if (sizeof($orders_year_choices) > 0 ) {
-			if ($orders_year_choices[0] != $current_year) {
-				$this->array_insert($orders_year_choices,0,$current_year);
+		$results = $this->model_account_salesmap->getGisOrders();
+
+		foreach ($results as $result) {
+
+			$dm = ($current_year - $result['order_year']) * 12 + ($current_month - $result['order_month']);
+
+
+			
+			if ( $dm < 6 ) {
+				if ( $result['scout_id'] == $cust_id ) {				
+					$data['my_current'][] = $result;
+				} else {
+					$data['all_current'][] = $result;
+				}
+			} else {
+				if ( $result['scout_id'] == $cust_id ) {				
+					$data['my_old'][] = $result;
+				} else {
+					$data['all_old'][] = $result;
+				}
 			}
 		}
 
-		$data['orders_year_choices'] = $orders_year_choices;
-
-		$filter_data = array(
-			'year'	=> $current_year,
-			'sort'  => 'date_added',
-			'order' => 'DESC',
-			'start' => 0,
-			'limit' => 10
-		);
-
-		$results = $this->model_account_salesmap->getTransactions($filter_data);		
-
-		$currency = $this->config->get('config_currency');
-
-		foreach ($results as $result) {
-			$data['transactions'][] = array(
-				'total'      => $this->currency->format($result['total'], $currency ),
-				'product_price' => $this->currency->format($result['product_price'], $currency),
-				'order_date'  => date($this->language->get('date_format_short'), strtotime($result['order_date'])),
-				'order_id' => $result['order_id'],
-				'product_name' => $result['product_name'],
-				'quantity' => $result['quantity'],
-				'sh_first_name' => $result['sh_first_name'],
-				'sh_last_name' => $result['sh_last_name'],
-				'sh_company_name' => $result['sh_company_name'],
-				'sh_addr_line_1' => $result['sh_addr_line_1'],
-				'sh_addr_line_2' => $result['sh_addr_line_2'],
-				'sh_city' => $result['sh_city'],
-				'sh_zone' => $result['sh_zone'],
-				'sh_postcode' => $result['sh_postcode'],
-				'sh_country' => $result['sh_country'],
-				'email' => $result['email'],
-				'telephone' => $result['telephone'],
-				'comment' => $result['comment'],
-				'shipping_code' => $result['shipping_code'],
-				'payment_method' => strlen($result['payment_method']) > 22 ? substr($result['payment_method'], 0, 22) . '...' : $result['payment_method']
-			);
-		}
-
-		$data['continue'] = $this->url->link('account/account', '', true);
 		$data['this_page_url'] = $this->url->link('account/salesmap', '', true);
 
 		$data['column_left'] = $this->load->controller('common/column_left');

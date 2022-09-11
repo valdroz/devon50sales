@@ -7,7 +7,7 @@ if (version_compare(phpversion(), '7.3.0', '<') == true) {
 	exit('PH7.3+ Required');
 }
 
-if (!ini_get('date.timezone')) {
+ if (!ini_get('date.timezone')) {
 	date_default_timezone_set('UTC');
 }
 
