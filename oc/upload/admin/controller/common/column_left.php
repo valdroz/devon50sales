@@ -589,6 +589,14 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => array()		
 				);
 			}
+
+			if ($this->user->hasPermission('access', 'tool/gis')) {
+				$maintenance[] = array(
+					'name'	   => $this->language->get('text_gis'),
+					'href'     => $this->url->link('tool/gis', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()		
+				);
+			}			
 					
 			if ($this->user->hasPermission('access', 'tool/upload')) {
 				$maintenance[] = array(

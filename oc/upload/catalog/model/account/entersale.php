@@ -183,8 +183,7 @@ class ModelAccountEntersale extends Model {
 
 	public function addOrder($data) {
 
-
-		$this->db->query("INSERT INTO `" . DB_PREFIX . "order` SET invoice_prefix = '" . $this->db->escape($data['invoice_prefix']) .
+		$sql = "INSERT INTO `" . DB_PREFIX . "order` SET invoice_prefix = '" . $this->db->escape($data['invoice_prefix']) .
 		 "', store_id = '" . (int)$data['store_id'] . 
 		 "', store_name = '" . $this->db->escape($data['store_name']) . 
 		 "', store_url = '" . $this->db->escape($data['store_url']) . 
@@ -240,8 +239,12 @@ class ModelAccountEntersale extends Model {
 		 "', user_agent = '" . $this->db->escape($data['user_agent']) . 
 		 "', accept_language = '" . $this->db->escape($data['accept_language']) . 
 		 "', order_status_id = '5" .  
-		 "', date_added = NOW(), date_modified = NOW()");
+		 "', date_added = STR_TO_DATE('" . $this->db->escape($data['order_date']) . "','%m/%d/%Y'), date_modified = NOW()";
+		 //"', date_added = NOW(), date_modified = NOW()";
 
+		$this->log->write('DEBUG: ' . $sql);
+
+		$this->db->query($sql);
 
 		$order_id = $this->db->getLastId();
 

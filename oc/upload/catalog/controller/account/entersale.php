@@ -74,6 +74,7 @@ class ControllerAccountEntersale extends Controller {
 
 			$zone = $this->model_localisation_zone->getZone($this->request->post['zone_id']);
 
+			$data['order_date'] = $this->request->post['order_date'];
 			$data['firstname'] = $this->request->post['payment_firstname'];
 			$data['lastname'] = $this->request->post['payment_lastname'];
 			$data['email'] = isset($this->request->post['email']) ? $this->request->post['email'] : '';

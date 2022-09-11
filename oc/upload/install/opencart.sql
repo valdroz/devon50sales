@@ -8265,3 +8265,17 @@ INSERT INTO `oc_zone_to_geo_zone` (`zone_to_geo_zone_id`, `country_id`, `zone_id
 (107, 222, 3954, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (108, 222, 3955, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (109, 222, 3972, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
+DROP TABLE IF EXISTS `oc_order_gis`;
+
+CREATE TABLE IF NOT EXISTS `oc_order_gis` (
+  `order_gis_id` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `lat` decimal(9,6) DEFAULT NULL,
+  `lon` decimal(9,6) DEFAULT NULL,
+  `type_id` int NOT NULL,
+  PRIMARY KEY (`order_gis_id`),
+  UNIQUE KEY `order_gis_id` (`order_gis_id`) /*!80000 INVISIBLE */,
+  KEY `order_id` (`order_id`)
+) ENGINE=MyISAM 
+COMMENT='BSA GIS Links';

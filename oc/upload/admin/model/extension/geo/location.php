@@ -79,7 +79,7 @@ class ModelExtensionGeoLocation extends Model {
 
 			$query= urlencode((string)$street . " " . (string)$city . " " . (string)$region . " " . + (string)$postalcode);
 	
-			$api_uri = "https://api.mapbox.com/geocoding/v5/mapbox.places-permanent/" . $query . ".json?types=address&country=US&access_token=" . MAPBOX_API_KEY . "&types=address&limit=1";
+ 			$api_uri = "https://api.mapbox.com/geocoding/v5/mapbox.places/" . $query . ".json?types=address&country=US&access_token=" . MAPBOX_API_KEY . "&types=address&limit=1";
 
 			$this->logger->write("GIS URL: " . $api_uri);
 	
