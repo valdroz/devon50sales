@@ -1,104 +1,54 @@
 <?php
 class ModelAccountSalesmap extends Model {
-	public function getTransactions($data = array()) {
+	public function getGisOrders() {
 
 		$cust_id = (int)$this->customer->getId();
 
 		$sql = "
 		SELECT 
-		 oc_order.date_added as order_date,
-		 oc_order.order_id as order_id,
-		 prod.name as product_name,
-		 prod.price as product_price,
-		 prod.quantity as quantity,
-		 prod.total as total,
-		 oc_order.shipping_firstname as sh_first_name,
-		 oc_order.shipping_lastname as sh_last_name,
-		 oc_order.shipping_company as sh_company_name,
-		 oc_order.shipping_address_1 as sh_addr_line_1,
-		 oc_order.shipping_address_2 as sh_addr_line_2,
-		 oc_order.shipping_city as sh_city,
-		 oc_order.shipping_zone as sh_zone,
-		 oc_order.shipping_postcode as sh_postcode,
-		 oc_order.shipping_country as sh_country,
-		 oc_order.email as email,
-		 oc_order.telephone as telephone,		 
-		 oc_order.payment_method as payment_method,
-		 oc_order.shipping_code as shipping_code,
-		 oc_order.comment as comment
-		FROM 
-		 oc_customer AS cust, 
-		 oc_customer_affiliate as af,
-		 oc_customer_transaction AS tr, 
-		 oc_customer_group_description AS gr,
-		 oc_order_product as prod,
-		 oc_order
-		WHERE tr.customer_id = cust.customer_id AND 
-			cust.customer_group_id = gr.customer_group_id AND 
-			af.customer_id = cust.customer_id AND
-			prod.order_id = tr.order_id AND
-			oc_order.order_id = tr.order_id AND 
-			cust.customer_id = '" . $cust_id . "' AND 
-			year(oc_order.date_added) = " . (int)$data['year'] . "
-		ORDER BY oc_order.date_added desc
-		 ";
-
-		$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+			gis_sales.order_id, scout_id, scout_firstname, scout_lastname, order_date, order_year, order_month, products, cust_firstname, cust_lastname, address_line_1, address_line_2, city, state, postal_code, lat, lon
+		FROM (
+				SELECT sales.order_id, scout_id, scout.firstname as scout_firstname, scout.lastname as scout_lastname, order_date, order_year, order_month,
+					GROUP_CONCAT(products SEPARATOR ', ') AS 'products',
+					cust_firstname, cust_lastname, address_line_1, address_line_2, city, state, postal_code
+				FROM (
+					SELECT 
+						oc_order.order_id as order_id,
+						cust.customer_id as scout_id, 
+						oc_order.date_added as order_date, 
+						year(oc_order.date_added) as order_year,
+						month(oc_order.date_added) as order_month,
+						CONCAT( prod.quantity, ' ', prod.name, '(s); ' ) AS 'products', 
+						oc_order.shipping_firstname as 'cust_firstname',
+						oc_order.shipping_lastname as 'cust_lastname',
+						oc_order.shipping_address_1 as 'address_line_1',
+						oc_order.shipping_address_2 as 'address_line_2',
+						oc_order.shipping_city as 'city',
+						oc_order.shipping_zone as 'state',
+						oc_order.shipping_postcode as 'postal_code'
+					FROM 
+						ocdevon.oc_customer AS cust, 
+						ocdevon.oc_customer_affiliate as af, 
+						ocdevon.oc_customer_transaction AS tr,
+						ocdevon.oc_order_product as prod, 
+						ocdevon.oc_order
+					WHERE 
+						tr.customer_id = cust.customer_id AND
+						af.customer_id = cust.customer_id AND
+						prod.order_id = tr.order_id AND
+						oc_order.order_id = tr.order_id AND
+						cust.customer_group_id = 2 AND
+						prod.product_id in (50,51) 
+				) AS sales, ocdevon.oc_customer as scout
+				WHERE scout.customer_id = scout_id
+				GROUP BY sales.order_id, sales.scout_id
+			) as gis_sales, ocdevon.oc_order_gis as gis
+		WHERE  gis_sales.order_id = gis.order_id AND gis.type_id = 0		
+	 ";
 
 		$query = $this->db->query($sql);
 
 		return $query->rows;
-	}
-
-
-	public function getSaleTotal($data = array()) {
-
-		$cust_id = (int)$this->customer->getId();
-
-		$sql = "
-		SELECT 
-		 sum(prod.total) as total
-		FROM 
-		 oc_customer AS cust, 
-		 oc_customer_affiliate as af,
-		 oc_customer_transaction AS tr, 
-		 oc_customer_group_description AS gr,
-		 oc_order_product as prod,
-		 oc_order
-		WHERE tr.customer_id = cust.customer_id AND 
-			cust.customer_group_id = gr.customer_group_id AND 
-			af.customer_id = cust.customer_id AND
-			prod.order_id = tr.order_id AND
-			oc_order.order_id = tr.order_id AND 
-			cust.customer_id = '" . $cust_id . "' AND 
-			year(oc_order.date_added) = " . (int)$data['year'] . "
-		ORDER BY oc_order.date_added desc
-		 ";
-
-		$query = $this->db->query($sql);
-
-		return $query->row['total'];
-	}
-
-	public function getTotalTransactions($data = array()) {
-		$query = $this->db->query("SELECT COUNT(*) AS total 
-			FROM " . DB_PREFIX . "customer_transaction AS ct, " . DB_PREFIX . "order_product AS op 
-			WHERE ct.order_id = op.order_id AND ct.customer_id = '" . (int)$this->customer->getId() . "' AND year(ct.date_added) = " . (int)$data['year'] . "");
-
-		return $query->row['total'];
-	}
-
-
-	public function getTransactionYears() {
-		$query = $this->db->query("SELECT distinct year(date_added) as year_added FROM `" . DB_PREFIX . "customer_transaction` order by year_added desc;");
-
-		$years = array();
-
-		foreach ($query->rows as $result) {
-			$years[] = $result['year_added'];
-		}
-
-		return $years;
 	}
 
 }

@@ -42,7 +42,7 @@
 
 <script type="text/javascript"><!--
 
-	mapboxgl.accessToken = 'pk.eyJ1IjoidmFsZHJveiIsImEiOiJja2xwYzJwZWYweGFoMnVyMDZ3MWVqbjRsIn0.Q9A8js9KE8rOJ_F6YIhYrA';
+	mapboxgl.accessToken = '{{mapbox_api_key}}';
     const map = new mapboxgl.Map({
         container: 'map',
         // style: 'mapbox://styles/mapbox/streets-v11',
@@ -68,7 +68,9 @@
                         'type': 'Feature',
                         'properties': {
                             'description':
-                                '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                                {% autoescape 'js' %}
+                                '<table><tr><td><strong>Scout:</strong></td><td>{{ order.scout_firstname }} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                                {% endautoescape %}
                         },
                         'geometry': {
                             'type': 'Point',
@@ -92,7 +94,9 @@
                         'type': 'Feature',
                         'properties': {
                             'description':
+                                {% autoescape 'js' %}
                                 '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                                {% endautoescape %}
                         },
                         'geometry': {
                             'type': 'Point',
@@ -116,7 +120,9 @@
                         'type': 'Feature',
                         'properties': {
                             'description':
+                                {% autoescape 'js' %}
                                 '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                                {% endautoescape %}
                         },
                         'geometry': {
                             'type': 'Point',
@@ -140,7 +146,9 @@
                         'type': 'Feature',
                         'properties': {
                             'description':
+                                {% autoescape 'js' %}
                                 '<table><tr><td><strong>Scout:</strong></td><td>{{order.scout_firstname}} {{order.scout_lastname}}</td></tr><tr><td><strong>Order# & Date:</strong></td><td>#{{order.order_id}} - {{order.order_date}}</td></tr><tr><td><strong>Customer:</strong></td><td>{{order.cust_firstname}} {{order.cust_lastname}}<br>{{order.address_line_1}}<br>{{order.city}}, {{order.state}} {{order.postal_code}}</td></tr><tr><td></td><td>{{order.products}}</td></tr></table>'
+                                {% endautoescape %}
                         },
                         'geometry': {
                             'type': 'Point',

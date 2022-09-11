@@ -12,6 +12,8 @@ final class MySQLi {
 
 		$this->connection->set_charset("utf8");
 		$this->connection->query("SET SQL_MODE = ''");
+		$dt = new \DateTime();
+		$this->connection->query("SET time_zone='" . $dt->format('P') . "';");		
 	}
 
 	public function query($sql) {

@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
 cp -r catalog /var/www/html/
-chown -R www-data:www-data /var/www/html/catalog
 cp -r reports /var/www/html/
-chown -R www-data:www-data /var/www/html/reports
 cp -r system /var/www/html/
-chown -R www-data:www-data /var/www/html/system
+cp -r admin/controller /var/www/html/admin/
+cp -r admin/language /var/www/html/admin/
+cp -r admin/model /var/www/html/admin/
+cp -r admin/view /var/www/html/admin/
+cp -r admin/index.php /var/www/html/admin/index.php
+
+chown -R www-data:www-data /var/www/html/
+
