@@ -111,7 +111,7 @@ class ModelExtensionGeoLocation extends Model {
 				} else {
 					$this->logger->write('GEO: NO FEAUTES');	
 				}
-
+				
 				$this->logger->write('GEO: ' . $query . ' -> lon=' . $longitude . ', lat=' . $latitude);
 			}
 	

@@ -105,8 +105,12 @@ class ModelExtensionGeoLocation extends Model {
 	
 			if (!$error) {
 				$output= json_decode($response);
-				$longitude = $output->features[0]->center[0]; 
-				$latitude = $output->features[0]->center[1];
+				if (sizeof($output->features) > 0) {
+					$longitude = $output->features[0]->center[0]; 
+					$latitude = $output->features[0]->center[1];
+				} else {
+					$this->logger->write('GEO: NO FEAUTES');	
+				}				
 
 				$this->logger->write('GEO: ' . $query . ' -> lon=' . $longitude . ', lat=' . $latitude);
 			}
