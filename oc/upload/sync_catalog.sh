@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-cp -r catalog /var/www/html/
-cp -r reports /var/www/html/
-cp -r system /var/www/html/
-cp -r admin/controller /var/www/html/admin/
-cp -r admin/language /var/www/html/admin/
-cp -r admin/model /var/www/html/admin/
-cp -r admin/view /var/www/html/admin/
-cp -r admin/index.php /var/www/html/admin/index.php
+cp -r catalog /var/www/fundraiser.devon50.org/
+cp -r reports /var/www/fundraiser.devon50.org/
+cp -r system /var/www/fundraiser.devon50.org/
+cp -r admin/controller /var/www/fundraiser.devon50.org/admin/
+cp -r admin/language /var/www/fundraiser.devon50.org/admin/
+cp -r admin/model /var/www/fundraiser.devon50.org/admin/
+cp -r admin/view /var/www/fundraiser.devon50.org/admin/
+cp -r admin/index.php /var/www/fundraiser.devon50.org/admin/index.php
 
-chown -R www-data:www-data /var/www/html/
+chown -R www-data:www-data /var/www/fundraiser.devon50.org/
 
