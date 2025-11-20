@@ -92,6 +92,28 @@ class ControllerCheckoutCheckout extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
+		$this->load->model('account/customer');
+
+		if (isset($this->request->cookie['tracking'])) {	
+			// Affiliate
+			$affiliate_info = $this->model_account_customer->getAffiliateByTracking($this->request->cookie['tracking']);
+
+			if ($affiliate_info) {
+				$affiliateId = $affiliate_info['customer_id'];
+				$affiliateDetail = $this->model_account_customer->getCustomer($affiliateId);
+				if ($affiliateDetail) {
+					$data['affiliate_name'] = $affiliateDetail['firstname'];
+				} else {
+					$data['affiliate_name'] = "Unassigned";
+				}
+			} else {
+				$data['affiliate_name'] = "Unassigned";
+			}
+		} else {
+			$data['affiliate_name'] = "Unassigned";
+		}
+		
+
 		$this->response->setOutput($this->load->view('checkout/checkout', $data));
 	}
 
